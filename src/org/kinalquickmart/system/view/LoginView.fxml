@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.LoginController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,16 +22,16 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField prefHeight="25.0" prefWidth="261.0" />
+            <TextField fx:id="txtCorreo" prefHeight="25.0" prefWidth="261.0" />
             <Label text="Contraseña">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <PasswordField />
+            <PasswordField fx:id="txtPassword" />
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="61.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="INICIAR SESION" />
+                  <Button fx:id="btnIniciarSesion" layoutX="61.0" layoutY="14.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="115.0" text="INICIAR SESION" />
                </children>
             </Pane>
          </children>
