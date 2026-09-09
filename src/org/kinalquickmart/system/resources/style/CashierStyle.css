@@ -7,3 +7,160 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Author     : informatica
 */
 
+/* =====================================================
+   QUICKMART - CAJERO
+   ===================================================== */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #F5F8FA;
+}
+
+.cashier-view {
+    -fx-background-color: #F5F8FA;
+}
+
+/* =====================================================
+   ENCABEZADO
+   ===================================================== */
+
+.cashier-header {
+    -fx-background-color: #164A70;
+    -fx-padding: 8px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.2, 0, 2);
+}
+
+.cashier-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* =====================================================
+   CONTENIDO
+   ===================================================== */
+
+.cashier-content {
+    -fx-background-color: #F5F8FA;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+}
+
+/* =====================================================
+   BÚSQUEDA
+   ===================================================== */
+
+.cashier-search {
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.cashier-search .text-field {
+    -fx-background-color: white;
+    -fx-border-color: #CFDCE3;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-padding: 9px 12px;
+}
+
+.cashier-search .text-field:focused {
+    -fx-border-color: #2D8BB8;
+    -fx-border-width: 2px;
+}
+
+.cashier-search-button {
+    -fx-background-color: #2D8BB8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9px 20px;
+    -fx-background-radius: 7px;
+    -fx-cursor: hand;
+}
+
+.cashier-search-button:hover {
+    -fx-background-color: #24789F;
+}
+
+/* =====================================================
+   TABLAS
+   ===================================================== */
+
+.cashier-products-table,
+.cashier-cart-table {
+    -fx-background-color: white;
+    -fx-border-color: #DCE6EC;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-focus-color: transparent;
+}
+
+.cashier-products-table .column-header-background,
+.cashier-cart-table .column-header-background {
+    -fx-background-color: #2D8BB8;
+}
+
+.cashier-products-table .column-header,
+.cashier-cart-table .column-header {
+    -fx-background-color: #2D8BB8;
+}
+
+.cashier-products-table .column-header .label,
+.cashier-cart-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.cashier-products-table .table-row-cell:hover,
+.cashier-cart-table .table-row-cell:hover {
+    -fx-background-color: #EAF5FA;
+}
+
+.cashier-products-table .table-row-cell:selected,
+.cashier-cart-table .table-row-cell:selected {
+    -fx-background-color: #D8EDF5;
+}
+
+/* =====================================================
+   TOTAL
+   ===================================================== */
+
+.cashier-total {
+    -fx-background-color: white;
+    -fx-padding: 13px 18px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #DCE6EC;
+    -fx-border-radius: 8px;
+}
+
+.cashier-total .label {
+    -fx-text-fill: #263238;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.cashier-total .label:last-child {
+    -fx-text-fill: #F28C28;
+    -fx-font-size: 20px;
+}
+
+/* =====================================================
+   FINALIZAR COMPRA
+   ===================================================== */
+
+.cashier-finish {
+    -fx-background-color: #F28C28;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 25px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.cashier-finish:hover {
+    -fx-background-color: #DB7417;
+}
+
+.cashier-finish:pressed {
+    -fx-background-color: #C56510;
+}

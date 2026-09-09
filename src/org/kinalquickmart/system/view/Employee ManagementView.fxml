@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="employee-view" stylesheets="@../resources/style/EmployeeManagementStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <Pane prefHeight="42.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="42.0" prefWidth="600.0" styleClass="employee-header" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="14.0" layoutY="15.0" text="QUICKMART" />
             <ImageView fitHeight="38.0" fitWidth="88.0" layoutX="514.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+                  <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
             <Label layoutX="233.0" layoutY="13.0" text="GESTIONAR EMPLEADOS" />
@@ -26,21 +26,21 @@
       </Pane>
    </top>
    <center>
-      <VBox prefHeight="328.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="328.0" prefWidth="600.0" styleClass="employee-content" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="39.0" prefWidth="600.0">
+            <HBox prefHeight="39.0" prefWidth="600.0" styleClass="employee-search">
                <children>
-                  <Button mnemonicParsing="false" text="BUSCAR" />
+                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="114.0" styleClass="employee-search-button" text="BUSCAR" />
                   <TextField prefHeight="25.0" prefWidth="476.0" />
                </children></HBox>
-            <TableView prefHeight="200.0" prefWidth="200.0" />
+            <TableView prefHeight="200.0" prefWidth="200.0" styleClass="employee-table" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" text="EDITAR" />
+                  <Button mnemonicParsing="false" styleClass="employee-edit" text="EDITAR" />
                   <Pane prefHeight="100.0" prefWidth="34.0" />
-                  <Button mnemonicParsing="false" text="DESPEDIR" />
+                  <Button mnemonicParsing="false" styleClass="employee-fire" text="DESPEDIR" />
                   <Pane prefHeight="100.0" prefWidth="33.0" />
-                  <Button mnemonicParsing="false" text="REGISTRAR NUEVO EMPLEADO" />
+                  <Button mnemonicParsing="false" styleClass="employee-register" text="REGISTRAR NUEVO EMPLEADO" />
                </children>
             </HBox>
          </children>

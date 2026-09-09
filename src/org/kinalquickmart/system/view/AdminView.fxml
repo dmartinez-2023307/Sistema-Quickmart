@@ -12,46 +12,46 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" text="CREAR">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" text="EDITAR">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
             <Pane prefHeight="16.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" text="ELIMINAR">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" text="CERRAR SECION">
+            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SECION">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="142.0" text="GESTION DE USUARIOS" />
+            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTION DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
    </left>
    <top>
-      <Pane prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="46.0" prefWidth="600.0" styleClass="admin-header" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="7.0" layoutY="15.0" text="QUICKMART" />
-            <ImageView fitHeight="64.0" fitWidth="81.0" layoutX="519.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="52.0" fitWidth="96.0" layoutX="496.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+                  <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
             <Label layoutX="238.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTARIO">
@@ -63,15 +63,15 @@
       </Pane>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="admin-content" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="32.0" prefWidth="446.0">
+            <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
-                  <Button mnemonicParsing="false" text="BUSCAR" />
+                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
                   <TextField prefHeight="25.0" prefWidth="371.0" />
                </children>
             </HBox>
-            <TableView prefHeight="322.0" prefWidth="403.0" />
+            <TableView prefHeight="322.0" prefWidth="403.0" styleClass="admin-table" />
          </children>
       </VBox>
    </center>

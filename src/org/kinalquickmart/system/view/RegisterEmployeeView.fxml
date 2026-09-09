@@ -10,49 +10,52 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="316.0" styleClass="register-view" stylesheets="@../resources/style/RegisterEmployeeStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <Pane prefHeight="55.0" prefWidth="290.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="55.0" prefWidth="290.0" styleClass="register-header" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="125.0" layoutY="8.0" text="GESTION DE EMPLEADOS" />
-            <ImageView fitHeight="49.0" fitWidth="87.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="115.0" layoutY="17.0" prefHeight="23.0" prefWidth="187.0" text="GESTION DE EMPLEADOS">
+               <font>
+                  <Font size="10.0" />
+               </font></Label>
+            <ImageView fitHeight="46.0" fitWidth="96.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+                  <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="397.0" prefWidth="313.0" styleClass="register-form" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="49.0" prefWidth="281.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="118.0" text="NOMBRE COMPLETO" />
-                  <TextField prefHeight="25.0" prefWidth="148.0" />
+                  <Label prefHeight="17.0" prefWidth="118.0" text="NOMBRE COMPLET" />
+                  <TextField prefHeight="25.0" prefWidth="148.0" styleClass="register-name" />
                </children>
             </HBox>
             <HBox prefHeight="46.0" prefWidth="281.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="119.0" text="CORREO" />
-                  <TextField prefHeight="25.0" prefWidth="148.0" />
+                  <TextField prefHeight="25.0" prefWidth="148.0" styleClass="register-email" />
                </children>
             </HBox>
             <HBox prefHeight="52.0" prefWidth="281.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="121.0" text="CONTRASEÑA" />
-                  <TextField prefHeight="25.0" prefWidth="149.0" />
+                  <TextField prefHeight="25.0" prefWidth="149.0" styleClass="register-password" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="122.0" text="ROL" />
-                  <ComboBox prefHeight="25.0" prefWidth="148.0" />
+                  <ComboBox prefHeight="25.0" prefWidth="148.0" styleClass="register-role" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" text="REGISTRAR" />
+            <Button mnemonicParsing="false" styleClass="register-button" text="REGISTRAR" />
          </children>
       </VBox>
    </center>
