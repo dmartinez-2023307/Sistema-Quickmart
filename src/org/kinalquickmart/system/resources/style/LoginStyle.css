@@ -7,3 +7,106 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Author     : informatica
 */
 
+
+
+/* =====================================================
+   QUICKMART - LOGIN
+   ===================================================== */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: white;
+}
+
+.login-view {
+    -fx-background-color: white;
+}
+
+/* =====================================================
+   FORMULARIO
+   ===================================================== */
+
+.login-form {
+    -fx-background-color: white;
+    -fx-padding: 35px;
+    -fx-spacing: 12px;
+    -fx-alignment: CENTER;
+}
+
+.login-form .label {
+    -fx-text-fill: #164A70;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* =====================================================
+   CAMPOS
+   ===================================================== */
+
+.login-email,
+.login-password {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #CFDCE3;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-padding: 10px 12px;
+    -fx-font-size: 14px;
+}
+
+.login-email:focused,
+.login-password:focused {
+    -fx-border-color: #2D8BB8;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+}
+
+/* =====================================================
+   BOTÓN
+   ===================================================== */
+
+.login-button {
+    -fx-background-color: #F28C28;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 11px 30px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #DB7417;
+}
+
+.login-button:pressed {
+    -fx-background-color: #C56510;
+}
+
+/* =====================================================
+   PANEL DERECHO
+   ===================================================== */
+
+.login-brand {
+    -fx-background-color: #164A70;
+    -fx-alignment: CENTER;
+}
+
+.login-brand .label {
+    -fx-text-fill: white;
+    -fx-font-size: 23px;
+    -fx-font-weight: bold;
+}
+
+/* Detalle amarillo */
+.login-brand:focused {
+    -fx-border-color: #F5C542;
+}
+
+/* =====================================================
+   LOGO
+   ===================================================== */
+
+.login-logo {
+    -fx-background-color: #EAF5FA;
+    -fx-alignment: CENTER;
+}

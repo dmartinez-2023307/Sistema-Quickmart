@@ -12,41 +12,40 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="winery-view" stylesheets="@../resources/style/WineryStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <Pane prefHeight="56.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="56.0" prefWidth="600.0" styleClass="winery-header" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="265.0" layoutY="15.0" text="BODEGA">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <ImageView fitHeight="50.0" fitWidth="140.0" layoutX="6.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="140.0" layoutX="8.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../Proyecto%20final%20archivos%20fxml/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+                  <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
          </children>
       </Pane>
    </top>
    <left>
-      <VBox alignment="CENTER" prefHeight="344.0" prefWidth="128.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="344.0" prefWidth="151.0" styleClass="winery-sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="158.0" prefWidth="95.0" text="EDITAR STOCK" />
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="149.0" styleClass="winery-edit-stock" text="EDITAR STOCK" />
          </children>
       </VBox>
    </left>
    <center>
-      <VBox prefHeight="344.0" prefWidth="459.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="344.0" prefWidth="459.0" styleClass="winery-content" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="50.0" prefWidth="472.0">
+            <HBox prefHeight="50.0" prefWidth="472.0" styleClass="winery-search">
                <children>
-                  <Button mnemonicParsing="false" text="BUSCAR" />
+                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="160.0" styleClass="winery-search-button" text="BUSCAR" />
                   <TextField prefHeight="25.0" prefWidth="381.0" />
                </children>
             </HBox>
-            <TableView prefHeight="317.0" prefWidth="472.0" />
+            <TableView prefHeight="317.0" prefWidth="472.0" styleClass="winery-table" />
          </children>
       </VBox>
    </center>
