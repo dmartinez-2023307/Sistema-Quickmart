@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="290.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <Pane prefHeight="55.0" prefWidth="290.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="125.0" layoutY="8.0" text="GESTION DE EMPLEADOS" />
+            <ImageView fitHeight="49.0" fitWidth="87.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="49.0" prefWidth="281.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="118.0" text="NOMBRE COMPLETO" />
+                  <TextField prefHeight="25.0" prefWidth="148.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="46.0" prefWidth="281.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="119.0" text="CORREO" />
+                  <TextField prefHeight="25.0" prefWidth="148.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="52.0" prefWidth="281.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="121.0" text="CONTRASEÑA" />
+                  <TextField prefHeight="25.0" prefWidth="149.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="122.0" text="ROL" />
+                  <ComboBox prefHeight="25.0" prefWidth="148.0" />
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" text="REGISTRAR" />
+         </children>
+      </VBox>
+   </center>
+   <left>
+      <Pane prefHeight="412.0" prefWidth="9.0" BorderPane.alignment="CENTER" />
+   </left>
+</BorderPane>
