@@ -1,34 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package org.kinalquickmart.system.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author informatica
- */
 public class ConexionDB {
-      private static ConexionDB instanciaConexionDB;
+    
+    private static ConexionDB instanciaConexionDB;
     private Connection connection;
 
-     private ConexionDB() {
+    public Connection getConnection() {
+        return this.connection;
+    }
+    
+    private ConexionDB() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql//"+Enviroment.LOCATION_SERVICE+"//"+Enviroment.DATA_BASE,
-                    Enviroment.USER, 
-                    Enviroment.PASSWORD);
-        } catch (ClassNotFoundException ClassNotFound) {
-            System.out.println("Error de clase no encontrada");
-        }catch (SQLException sqlException){
-            System.out.println("Error de conexion sql");
-        }catch(Exception e){
-            System.out.println("Error Padre" + e.getMessage());
+            String url = "jdbc:mysql://" + Enviroment.LOCATION_SERVICE + "/" + Enviroment.DATA_BASE;
+            connection = DriverManager.getConnection(url, Enviroment.USER, Enviroment.PASSWORD);
+            System.out.println("✅ CONEXIÓN EXITOSA a: " + Enviroment.DATA_BASE);
+            
+
+        } catch (SQLException e) {
+            System.err.println(" ERROR DE CONEXIÓN SQL:");
+            System.err.println(e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println(" Error inesperado: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

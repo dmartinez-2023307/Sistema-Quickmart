@@ -64,7 +64,7 @@ CREATE TABLE detalle_venta (
 
 
 
--- STORED PROCEDURES: CATEGORIA
+--  CATEGORIA
 
 DELIMITER $$
 
@@ -109,7 +109,7 @@ DELIMITER ;
 
 
 
--- STORED PROCEDURES: USUARIO
+--  USUARIO
 
 DELIMITER $$
 
@@ -138,7 +138,7 @@ CREATE PROCEDURE sp_validarLogin(
     IN p_password VARCHAR(255)
 )
 BEGIN
-    SELECT id_usuario, correo, nombre_completo, rol
+    SELECT id_usuario, correo, nombre_completo
     FROM Usuario
     WHERE correo = p_correo
       AND password = p_password
@@ -157,7 +157,6 @@ BEGIN
     WHERE id_usuario = p_id;
 END $$
 
--- DELETE: Soft delete (desactivar usuario)
 CREATE PROCEDURE sp_eliminarUsuario(IN p_id INT)
 BEGIN
     UPDATE Usuario SET activo = FALSE WHERE id_usuario = p_id;
@@ -165,7 +164,7 @@ END $$
 
 DELIMITER ;
 
--- STORED PROCEDURES: PRODUCTO
+-- PRODUCTO
 
 DELIMITER $$
 
@@ -254,7 +253,7 @@ DELIMITER ;
 
 
 
--- STORED PROCEDURES: VENTA
+--  VENTA
 
 DELIMITER $$
 CREATE PROCEDURE sp_crearVenta(
