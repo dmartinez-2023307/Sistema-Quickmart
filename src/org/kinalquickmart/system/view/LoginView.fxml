@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" 
    styleClass="login-view" 
    stylesheets="@../resources/style/LoginStyle.css" 
@@ -19,6 +20,13 @@
    xmlns:fx="http://javafx.com/fxml/1" 
    fx:controller="org.kinalquickmart.system.controller.LoginController">
    
+=======
+<<<<<<< HEAD:src/org/kinalquickmart/system/view/LoginView.fxml
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.LoginController">
+=======
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="login-view" stylesheets="@../resources/style/LoginStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+>>>>>>> 5f96e65 (feat: Se crearon los estilos de las vistas):src/org/kinalquickmart/system/view/Login.fxml
+>>>>>>> 3cf13fc (feat: Se crearon los estilos de las vistas)
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="login-form" BorderPane.alignment="CENTER">
          <children>
@@ -29,18 +37,43 @@
                   <Font size="22.0" />
                </font>
             </Label>
+<<<<<<< HEAD
             <TextField fx:id="txtCorreo" prefHeight="25.0" prefWidth="261.0" styleClass="login-email" />
+<<<<<<< HEAD
             
+=======
+=======
+<<<<<<< HEAD:src/org/kinalquickmart/system/view/LoginView.fxml
+            <TextField fx:id="txtCorreo" prefHeight="25.0" prefWidth="261.0" />
+=======
+            <TextField prefHeight="25.0" prefWidth="261.0" styleClass="login-email" />
+>>>>>>> 5f96e65 (feat: Se crearon los estilos de las vistas):src/org/kinalquickmart/system/view/Login.fxml
+>>>>>>> 3cf13fc (feat: Se crearon los estilos de las vistas)
+>>>>>>> b01bb8b (feat: Se crearon los estilos de las vistas)
             <Label text="Contraseña">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
+<<<<<<< HEAD
             <PasswordField fx:id="txtPassword" styleClass="login-password" />
             
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
                   <Button fx:id="btnIniciarSesion" layoutX="61.0" layoutY="14.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="115.0" text="INICIAR SESION" styleClass="login-button" />
+=======
+<<<<<<< HEAD:src/org/kinalquickmart/system/view/LoginView.fxml
+            <PasswordField fx:id="txtPassword" />
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btnIniciarSesion" layoutX="61.0" layoutY="14.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="115.0" text="INICIAR SESION" />
+=======
+            <PasswordField styleClass="login-password" />
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="-16.0" layoutY="26.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="182.0" styleClass="login-button" text="INICIAR SESION" />
+>>>>>>> 5f96e65 (feat: Se crearon los estilos de las vistas):src/org/kinalquickmart/system/view/Login.fxml
+>>>>>>> 3cf13fc (feat: Se crearon los estilos de las vistas)
                </children>
             </Pane>
          </children>
