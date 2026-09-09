@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="login-view" stylesheets="@../resources/style/LoginStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="login-form" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="108.0" prefWidth="237.0" />
             <Label text="Correo">
@@ -22,16 +22,16 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField prefHeight="25.0" prefWidth="261.0" />
+            <TextField prefHeight="25.0" prefWidth="261.0" styleClass="login-email" />
             <Label text="Contraseña">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <PasswordField />
+            <PasswordField styleClass="login-password" />
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="61.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="115.0" text="INICIAR SESION" />
+                  <Button layoutX="-16.0" layoutY="26.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="182.0" styleClass="login-button" text="INICIAR SESION" />
                </children>
             </Pane>
          </children>
@@ -41,17 +41,17 @@
       </VBox>
    </center>
    <right>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="400.0" prefWidth="211.0" styleClass="login-brand" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="-77.0" layoutY="13.0" prefHeight="56.0" prefWidth="264.0" text="LOGIN QUICKMART">
+            <Label layoutX="4.0" layoutY="153.0" prefHeight="94.0" prefWidth="203.0" styleClass="login-title" text="LOGIN QUICMART">
                <font>
-                  <Font name="System Bold Italic" size="21.0" />
+                  <Font name="System Bold Italic" size="19.0" />
                </font>
             </Label>
          </children></Pane>
    </right>
    <left>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="400.0" prefWidth="169.0" styleClass="login-logo" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="96.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
                <image>
