@@ -15,6 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/Login.fxml"));
             Parent root = loader.load();
             
