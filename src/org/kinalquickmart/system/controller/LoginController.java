@@ -16,12 +16,10 @@ import javafx.stage.Stage;
 
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
-import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class LoginController {
 
     private static final String RUTA_VISTAS = "/org/kinalquickmart/system/view/";
-
     private final AlertInformation alertInfo = new AlertInformation();
 
     @FXML
@@ -58,38 +56,55 @@ public class LoginController {
         validarCredenciales(correo, password);
     }
 
-    // --- LÓGICA DE VALIDACIÓN ROBUSTA ---
     private void validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
-        // 1. Obtener la conexión FUERA del try para que NO se cierre automáticamente
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         if (conn == null) {
             alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
             return;
         }
 
-        // 2. Solo el CallableStatement y ResultSet van DENTRO del try
         try (CallableStatement cs = conn.prepareCall(sql)) {
             cs.setString(1, correo);
-            cs.setString(2, password); // Parámetro necesario para el SP
+            cs.setString(2, password); 
 
             try (ResultSet rs = cs.executeQuery()) {
-                // Correo inexistente o contraseña que no coincide con el hash guardado
-                if (!rs.next() || !PasswordUtil.verificar(password, rs.getString("password"))) {
+                // El Stored Procedure 'sp_validarLogin' ya valida la contraseña y que esté activo.
+                // Si rs.next() es verdadero, el login es exitoso.
+                
+                if (!rs.next()) {
                     alertInfo.viewAlert(
                         "ERROR",
                         "Credenciales Incorrectas",
-                        "El correo o la contraseña no son válidos.",
+                        "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
                         "Error de autenticación"
                     );
-                    txtPassword.clear(); // Limpiar solo la contraseña para reintentar
+                    txtPassword.clear(); 
                     return;
                 }
 
-                // Credenciales correctas, pero la cuenta fue desactivada
-                if (!rs.getBoolean("activo")) {
-                    alertInfo.viewAlert(
-                        "ERROR",
-                        "Usuario Inactivo",
-                        "
+                // ¡LOGIN EXITOSO!
+                String nombreUsuario = rs.getString("nombre_completo");
+                System.out.println("✅ Login exitoso para: " + nombreUsuario);
+                
+                // Cambiar a la vista AdminView
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + "AdminView.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("QuickMart - Panel Principal");
+                    stage.show();
+                } catch (IOException e) {
+                    alertInfo.viewAlert("ERROR", "Error", "No se pudo cargar la vista principal.", "Error");
+                    e.printStackTrace();
+                }
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo conectar: " + e.getMessage(), "Error");
+        }
+    }
+}

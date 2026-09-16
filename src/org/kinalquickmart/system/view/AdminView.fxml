@@ -38,7 +38,6 @@
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <!-- CORREGIDO: onAction="#managementUser" para que coincida con el Java -->
             <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
@@ -80,7 +79,6 @@
                 <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
               </columns>
             </TableView>
-            
          </children>
       </VBox>
    </center>
