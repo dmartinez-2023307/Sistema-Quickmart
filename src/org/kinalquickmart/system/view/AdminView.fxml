@@ -22,6 +22,7 @@
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
+<<<<<<< HEAD
             
             <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
                <font><Font size="15.0" /></font>
@@ -39,6 +40,27 @@
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
             <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
+=======
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="16.0" prefWidth="154.0" />
+            <Button fx:id="btndelete" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="17.0" prefWidth="154.0" />
+            <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutSesion" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SESION">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Pane prefHeight="17.0" prefWidth="154.0" />
+            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTION DE USUARIOS" />
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
@@ -66,6 +88,7 @@
             <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
                   <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchProduct" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
+<<<<<<< HEAD
                   <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="371.0" />
                </children>
             </HBox>
@@ -80,6 +103,12 @@
               </columns>
             </TableView>
             
+=======
+                  <TextField fx:id="txtSearchBar" onAction="#searchBarProduct" prefHeight="25.0" prefWidth="371.0" />
+               </children>
+            </HBox>
+            <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table" />
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
          </children>
       </VBox>
    </center>

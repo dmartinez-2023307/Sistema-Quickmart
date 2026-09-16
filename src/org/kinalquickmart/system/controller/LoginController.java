@@ -7,11 +7,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+<<<<<<< HEAD
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+=======
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.sql.Connection;
+import java.sql.CallableStatement;
+import java.io.IOException;
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
 import java.sql.ResultSet;
 
 import org.kinalquickmart.system.config.ConexionDB;
@@ -43,6 +53,7 @@ public class LoginController {
         // 1. Validar que los campos no estén vacíos
         if (correo.isEmpty() || password.isEmpty()) {
             alertInfo.viewAlert(
+<<<<<<< HEAD
                 "WARNING",
                 "Campos vacíos",
                 "Por favor, ingresa tu correo y contraseña.",
@@ -70,13 +81,37 @@ public class LoginController {
             txtPassword.clear(); // Limpiar solo la contraseña para reintentar
         }
     }
+=======
+                    "",
+                    "Campos vacíos",
+                    "Por favor, ingresa tu correo y contraseña.",
+                    "Validación de campos"
+            );
+            return;
+        } else {
+            alertInfo.viewAlert(
+                    "ERROR",
+                    "Credenciales Incorrectas",
+                    "Error, USUARIO NO ENCONTRADO",
+                    "Error de autenticación"
+            );
+            txtPassword.clear();
+        }
+    }
+    
+ 
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
 
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
+<<<<<<< HEAD
         // Try-with-resources para asegurar el cierre automático de recursos
         try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
+=======
+        try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
 
             cs.setString(1, correo);
             cs.setString(2, password);
@@ -88,14 +123,22 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
             alertInfo.viewAlert(
+<<<<<<< HEAD
                 "ERROR",
                 "Error de Base de Datos",
                 "No se pudo conectar: " + e.getMessage(),
                 "Error de conexión"
+=======
+                    "ERROR",
+                    "Error de Base de Datos",
+                    "No se pudo conectar: " + e.getMessage(),
+                    "Error de conexión"
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
             );
             return false;
         }
     }
+<<<<<<< HEAD
 
     private void navegarAdminView() {
         try {
@@ -121,3 +164,7 @@ public class LoginController {
         }
     }
 }
+=======
+    
+}
+>>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
