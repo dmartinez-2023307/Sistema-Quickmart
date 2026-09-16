@@ -13,16 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="534.0" styleClass="cashier-view" stylesheets="@../resources/style/CashierStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <Pane prefHeight="65.0" prefWidth="534.0" BorderPane.alignment="CENTER">
+      <Pane prefHeight="65.0" prefWidth="534.0" styleClass="cashier-header" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="47.0" fitWidth="115.0" layoutX="14.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="65.0" fitWidth="120.0" layoutX="7.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview.png" />
+                  <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
-            <Label layoutX="423.0" layoutY="8.0" prefHeight="27.0" prefWidth="85.0" text="CAJERO">
+            <Label layoutX="420.0" layoutY="19.0" prefHeight="27.0" prefWidth="85.0" text="CAJERO">
                <font>
                   <Font size="20.0" />
                </font>
@@ -31,19 +31,19 @@
       </Pane>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="cashier-content" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="36.0" prefWidth="432.0">
+            <HBox prefHeight="36.0" prefWidth="432.0" styleClass="cashier-search">
                <children>
-                  <Button mnemonicParsing="false" text="BUSCAR" />
+                  <Button mnemonicParsing="false" styleClass="cashier-search-button" text="BUSCAR" />
                   <TextField prefHeight="25.0" prefWidth="191.0" />
                </children>
             </HBox>
             <HBox prefHeight="284.0" prefWidth="505.0">
                <children>
-                  <TableView prefHeight="327.0" prefWidth="250.0" />
+                  <TableView prefHeight="327.0" prefWidth="250.0" styleClass="cashier-products-table" />
                   <Pane prefHeight="269.0" prefWidth="16.0" />
-                  <TableView prefHeight="240.0" prefWidth="228.0">
+                  <TableView prefHeight="240.0" prefWidth="228.0" styleClass="cashier-cart-table">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />
@@ -51,7 +51,7 @@
                   </TableView>
                </children>
             </HBox>
-            <HBox prefHeight="63.0" prefWidth="505.0">
+            <HBox prefHeight="63.0" prefWidth="505.0" styleClass="cashier-total">
                <children>
                   <Pane prefHeight="63.0" prefWidth="261.0" />
                   <VBox prefHeight="63.0" prefWidth="237.0">
@@ -62,7 +62,7 @@
                               <Label text="Q0.00" />
                            </children>
                         </HBox>
-                        <Button mnemonicParsing="false" text="FINALIZAR COMPRA" />
+                        <Button mnemonicParsing="false" styleClass="cashier-finish" text="FINALIZAR COMPRA" />
                      </children>
                   </VBox>
                </children>

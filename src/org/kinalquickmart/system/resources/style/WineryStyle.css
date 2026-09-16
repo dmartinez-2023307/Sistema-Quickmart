@@ -3,13 +3,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : 9 sept 2026, 08:35:08
+    Created on : 9 sept 2026, 09:06:32
     Author     : informatica
 */
 
 /* =====================================================
-   QUICKMART - ADMIN
-   Estilo profesional
+   QUICKMART - BODEGA
    ===================================================== */
 
 .root {
@@ -17,8 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: #F5F8FA;
 }
 
-/* VISTA PRINCIPAL */
-.admin-view {
+.winery-view {
     -fx-background-color: #F5F8FA;
 }
 
@@ -26,94 +24,51 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
    ENCABEZADO
    ===================================================== */
 
-.admin-header {
+.winery-header {
     -fx-background-color: #164A70;
     -fx-padding: 8px 18px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.2, 0, 2);
 }
 
-.admin-header .label {
+.winery-header .label {
     -fx-text-fill: white;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-}
-
-.admin-header .label:first-child {
-    -fx-font-size: 22px;
-}
-
-.admin-header .label:last-child {
-    -fx-font-size: 19px;
 }
 
 /* =====================================================
    MENÚ LATERAL
    ===================================================== */
 
-.admin-sidebar {
-    -fx-background-color: #FFFFFF;
-    -fx-padding: 22px 14px;
-    -fx-spacing: 9px;
+.winery-sidebar {
+    -fx-background-color: white;
+    -fx-padding: 20px 12px;
+    -fx-alignment: CENTER;
     -fx-border-color: #DCE6EC;
     -fx-border-width: 0 1px 0 0;
 }
 
-/* Botones */
-.admin-sidebar .button {
-    -fx-background-color: #EAF5FA;
-    -fx-text-fill: #164A70;
-    -fx-font-size: 13px;
+/* EDITAR STOCK */
+
+.winery-edit-stock {
+    -fx-background-color: #F28C28;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-background-radius: 7px;
-    -fx-border-radius: 7px;
-    -fx-padding: 10px 8px;
+    -fx-padding: 11px 17px;
+    -fx-background-radius: 8px;
     -fx-cursor: hand;
 }
 
-/* Hover */
-.admin-sidebar .button:hover {
-    -fx-background-color: #2D8BB8;
-    -fx-text-fill: white;
-}
-
-/* CREAR */
-.admin-create {
-    -fx-background-color: #F28C28;
-    -fx-text-fill: white;
-}
-
-.admin-create:hover {
+.winery-edit-stock:hover {
     -fx-background-color: #DB7417;
-}
-
-/* EDITAR */
-.admin-edit {
-    -fx-background-color: #EAF5FA;
-    -fx-text-fill: #164A70;
-}
-
-/* ELIMINAR */
-.admin-delete {
-    -fx-background-color: #F9EEEE;
-    -fx-text-fill: #B64A45;
-}
-
-/* CERRAR SESIÓN */
-.admin-logout {
-    -fx-background-color: #F1F3F4;
-    -fx-text-fill: #52636D;
-}
-
-/* GESTIÓN DE USUARIOS */
-.admin-users {
-    -fx-background-color: #FFF8D9;
-    -fx-text-fill: #866B12;
 }
 
 /* =====================================================
    CONTENIDO
    ===================================================== */
 
-.admin-content {
+.winery-content {
     -fx-background-color: #F5F8FA;
     -fx-padding: 20px;
     -fx-spacing: 15px;
@@ -123,26 +78,25 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
    BÚSQUEDA
    ===================================================== */
 
-.admin-search {
+.winery-search {
     -fx-spacing: 10px;
     -fx-alignment: CENTER_LEFT;
 }
 
-.admin-search .text-field {
+.winery-search .text-field {
     -fx-background-color: white;
     -fx-border-color: #CFDCE3;
     -fx-border-radius: 7px;
     -fx-background-radius: 7px;
     -fx-padding: 9px 12px;
-    -fx-font-size: 14px;
 }
 
-.admin-search .text-field:focused {
+.winery-search .text-field:focused {
     -fx-border-color: #2D8BB8;
     -fx-border-width: 2px;
 }
 
-.admin-search-button {
+.winery-search-button {
     -fx-background-color: #2D8BB8;
     -fx-text-fill: white;
     -fx-font-weight: bold;
@@ -151,7 +105,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-cursor: hand;
 }
 
-.admin-search-button:hover {
+.winery-search-button:hover {
     -fx-background-color: #24789F;
 }
 
@@ -159,42 +113,35 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
    TABLA
    ===================================================== */
 
-.admin-table {
+.winery-table {
     -fx-background-color: white;
     -fx-border-color: #DCE6EC;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
 }
 
-.admin-table .column-header-background {
+.winery-table .column-header-background {
     -fx-background-color: #2D8BB8;
 }
 
-.admin-table .column-header {
+.winery-table .column-header {
     -fx-background-color: #2D8BB8;
-    -fx-border-color: transparent;
-}
+}   
 
-.admin-table .column-header .label {
+.winery-table .column-header .label {
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-.admin-table .table-row-cell {
-    -fx-background-color: white;
-    -fx-border-color: transparent;
-}
-
-.admin-table .table-row-cell:hover {
+.winery-table .table-row-cell:hover {
     -fx-background-color: #EAF5FA;
 }
 
-.admin-table .table-row-cell:selected {
+.winery-table .table-row-cell:selected {
     -fx-background-color: #D8EDF5;
 }
 
-.admin-table .table-row-cell:selected .text {
+.winery-table .table-row-cell:selected .text {
     -fx-fill: #164A70;
 }

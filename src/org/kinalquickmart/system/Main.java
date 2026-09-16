@@ -15,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            // ✅ RUTA CORRECTA: Login.fxml (no LoginView.fxml)
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/Login.fxml"));
             Parent root = loader.load();
             
