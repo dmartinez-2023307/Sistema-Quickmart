@@ -69,88 +69,97 @@ public class RegisterProductController implements Initializable {
     }
 
     @FXML
-    private void handleRegisterProduct() {
-        if (camposVacios()) {
+private void handleRegisterProduct() {
+    if (camposVacios()) {
+        alertInfo.viewAlert(
+            "WARNING",
+            "Campos Incompletos",
+            "Por favor, complete todos los campos obligatorios.",
+            "Validación de campos"
+        );
+        return;
+    }
+
+    try {
+        BigDecimal costPrice = new BigDecimal(txtCostPrice.getText());
+        BigDecimal salePrice = new BigDecimal(txtSalePrice.getText());
+        int stock = Integer.parseInt(txtStock.getText());
+
+        if (costPrice.compareTo(BigDecimal.ZERO) <= 0) {
             alertInfo.viewAlert(
-                "WARNING",
-                "Campos Incompletos",
-                "Por favor, complete todos los campos obligatorios.",
-                "Validación de campos"
+                "ERROR",
+                "Precio Inválido",
+                "El precio de costo debe ser mayor a 0.",
+                "Validación de precio"
             );
             return;
         }
 
-        try {
-            BigDecimal costPrice = new BigDecimal(txtCostPrice.getText());
-            BigDecimal salePrice = new BigDecimal(txtSalePrice.getText());
-            int stock = Integer.parseInt(txtStock.getText());
-
-            if (costPrice.compareTo(BigDecimal.ZERO) <= 0) {
-                alertInfo.viewAlert(
-                    "ERROR",
-                    "Precio Inválido",
-                    "El precio de costo debe ser mayor a 0.",
-                    "Validación de precio"
-                );
-                return;
-            }
-
-            if (salePrice.compareTo(costPrice) <= 0) {
-                alertInfo.viewAlert(
-                    "ERROR",
-                    "Precio Inválido",
-                    "El precio de venta debe ser MAYOR que el precio de costo.",
-                    "Validación de precio"
-                );
-                return;
-            }
-
-            if (stock < 0) {
-                alertInfo.viewAlert(
-                    "ERROR",
-                    "Stock Inválido",
-                    "El stock no puede ser un número negativo.",
-                    "Validación de stock"
-                );
-                return;
-            }
-
-            Product newProduct = new Product();
-            newProduct.setBarCode(txtBarCode.getText().trim());
-            newProduct.setCommercialName(txtProductName.getText().trim());
-            newProduct.setCostPrice(costPrice);
-            newProduct.setSalePrice(salePrice);
-            newProduct.setCurrentStock(stock);
-            newProduct.setCategory(cmbCategory.getValue());
-
-            if (productDAO.saveProduct(newProduct)) {
-                alertInfo.viewAlert(
-                    "INFORMATION",
-                    "Registro Exitoso",
-                    "El producto ha sido registrado correctamente en el sistema.",
-                    "Éxito"
-                );
-                limpiarCampos();
-            } else {
-                alertInfo.viewAlert(
-                    "ERROR",
-                    "Error de Registro",
-                    "El código de barras ya existe. Por favor, utilice un código único.",
-                    "Error de base de datos"
-                );
-                txtBarCode.requestFocus();
-                txtBarCode.selectAll();
-            }
-
-        } catch (NumberFormatException e) {
+        if (salePrice.compareTo(costPrice) <= 0) {
             alertInfo.viewAlert(
                 "ERROR",
-                "Formato Inválido",
-                "Verifique que los precios y el stock sean números válidos.",
-                "Error de formato"
+                "Precio Inválido",
+                "El precio de venta debe ser MAYOR que el precio de costo.",
+                "Validación de precio"
             );
+            return;
         }
+
+        if (stock < 0) {
+            alertInfo.viewAlert(
+                "ERROR",
+                "Stock Inválido",
+                "El stock no puede ser un número negativo.",
+                "Validación de stock"
+            );
+            return;
+        }
+
+        Product newProduct = new Product();
+        newProduct.setBarCode(txtBarCode.getText().trim());
+        newProduct.setCommercialName(txtProductName.getText().trim());
+        newProduct.setCostPrice(costPrice);
+        newProduct.setSalePrice(salePrice);
+        newProduct.setCurrentStock(stock);
+        newProduct.setCategory(cmbCategory.getValue());
+
+        if (productDAO.saveProduct(newProduct)) {
+            // ✅ US 1.3: Verificar visualmente que el stock se guardó correctamente
+            String mensajeConfirmacion = String.format(
+                "Producto: %s\nCódigo: %s\nStock registrado: %d unidades\nPrecio venta: Q%.2f",
+                newProduct.getCommercialName(),
+                newProduct.getBarCode(),
+                newProduct.getCurrentStock(),
+                newProduct.getSalePrice()
+            );
+            
+            alertInfo.viewAlert(
+                "INFORMATION",
+                "Registro Exitoso",
+                mensajeConfirmacion,
+                "Producto guardado correctamente"
+            );
+            limpiarCampos();
+        } else {
+            alertInfo.viewAlert(
+                "ERROR",
+                "Error de Registro",
+                "El código de barras ya existe. Por favor, utilice un código único.",
+                "Error de base de datos"
+            );
+            txtBarCode.requestFocus();
+            txtBarCode.selectAll();
+        }
+
+    } catch (NumberFormatException e) {
+        alertInfo.viewAlert(
+            "ERROR",
+            "Formato Inválido",
+            "Verifique que los precios y el stock sean números válidos.",
+            "Error de formato"
+        );
     }
+}
 
     @FXML
     private void limpiarCampos() {
