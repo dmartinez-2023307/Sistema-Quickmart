@@ -16,7 +16,7 @@
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleCreateProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
                <font>
                   <Font size="15.0" />
                </font>
