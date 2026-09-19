@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -12,39 +13,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminController">
+            
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleCreateProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
-               <font>
-                  <Font size="15.0" />
-               </font>
+               <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
-               <font>
-                  <Font size="15.0" />
-               </font>
+            
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
+               <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="16.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
-               <font>
-                  <Font size="15.0" />
-               </font>
+            
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
+               <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SECION">
-               <font>
-                  <Font size="15.0" />
-               </font>
+            
+            <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutUser" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SESIÓN">
+               <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTION DE USUARIOS" />
+            
+            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
    </left>
+   
    <top>
       <Pane prefHeight="46.0" prefWidth="600.0" styleClass="admin-header" BorderPane.alignment="CENTER">
          <children>
@@ -55,23 +54,32 @@
                </image>
             </ImageView>
             <Label layoutX="238.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTARIO">
-               <font>
-                  <Font size="20.0" />
-               </font>
+               <font><Font size="20.0" /></font>
             </Label>
          </children>
       </Pane>
    </top>
+   
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="admin-content" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
-                  <TextField prefHeight="25.0" prefWidth="371.0" />
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchProduct" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
+                  <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="371.0" />
                </children>
             </HBox>
-            <TableView prefHeight="322.0" prefWidth="403.0" styleClass="admin-table" />
+            
+            <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table">
+              <columns>
+                <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="colName" prefWidth="150.0" text="Nombre" />
+                <TableColumn fx:id="colCategory" prefWidth="100.0" text="Categoría" />
+                <TableColumn fx:id="colStock" prefWidth="50.0" text="Stock" />
+                <TableColumn fx:id="colPrice" prefWidth="75.0" text="Precio" />
+              </columns>
+            </TableView>
+            
          </children>
       </VBox>
    </center>

@@ -8,9 +8,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.sql.Connection;
+
+import java.io.IOException;
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
+
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
 
@@ -29,6 +32,7 @@ public class LoginController {
 
     @FXML
     private void initialize() {
+        // Código de inicialización si es necesario
     }
 
     @FXML
@@ -36,6 +40,7 @@ public class LoginController {
         String correo = txtCorreo.getText().trim();
         String password = txtPassword.getText().trim();
 
+        // 1. Validar que los campos no estén vacíos
         if (correo.isEmpty() || password.isEmpty()) {
             alertInfo.viewAlert(
                 "WARNING",
@@ -46,6 +51,7 @@ public class LoginController {
             return;
         }
 
+        // 2. Validar credenciales en la base de datos
         if (validarCredenciales(correo, password)) {
             alertInfo.viewAlert(
                 "INFORMATION",
@@ -58,16 +64,17 @@ public class LoginController {
             alertInfo.viewAlert(
                 "ERROR",
                 "Credenciales Incorrectas",
-                "Error, USUARIO NO ENCONTRADO",
+                "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
                 "Error de autenticación"
             );
-            txtPassword.clear();
+            txtPassword.clear(); // Limpiar solo la contraseña para reintentar
         }
     }
 
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
+        // Try-with-resources para asegurar el cierre automático de recursos
         try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
              CallableStatement cs = conn.prepareCall(sql)) {
 
@@ -75,10 +82,8 @@ public class LoginController {
             cs.setString(2, password);
 
             try (ResultSet rs = cs.executeQuery()) {
-                if (rs.next()) {
-                    return true;
-                }
-                return false;
+                // Si rs.next() es true, encontró el usuario y la contraseña coincide
+                return rs.next(); 
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,13 +103,14 @@ public class LoginController {
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
+            // Obtener la ventana actual y cambiar la escena
             Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
             stage.setTitle("QuickMart - Panel de Administrador");
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(false); // Opcional: evita que el usuario redimensione la ventana
             stage.show();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             alertInfo.viewAlert(
                 "ERROR",

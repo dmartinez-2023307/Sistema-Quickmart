@@ -12,7 +12,7 @@ public class Product {
     private int currentStock;
     private Category category;
 
-    // Constructor vacío (necesario para JavaFX)
+
     public Product() {
     }
 

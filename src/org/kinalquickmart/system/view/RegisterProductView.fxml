@@ -11,7 +11,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="346.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="346.0" 
+   xmlns="http://javafx.com/javafx/21.0.1" 
+   xmlns:fx="http://javafx.com/fxml/1" 
+   fx:controller="org.kinalquickmart.system.controller.RegisterProductController">
+   
    <top>
       <Pane prefHeight="55.0" prefWidth="346.0" BorderPane.alignment="CENTER">
          <children>
@@ -24,56 +28,72 @@
          </children>
       </Pane>
    </top>
+   
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <!-- Código de Barras -->
             <HBox prefHeight="60.0" prefWidth="307.0">
                <children>
-                  <Label prefHeight="21.0" prefWidth="193.0" text="CODIGO DE BARRAS" />
+                  <Label prefHeight="21.0" prefWidth="193.0" text="CÓDIGO DE BARRAS" />
                   <TextField fx:id="txtBarCode" prefHeight="25.0" prefWidth="107.0" />
                </children>
             </HBox>
+            
+            <!-- Nombre del Producto -->
             <HBox prefHeight="62.0" prefWidth="307.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="197.0" text="NOMBRE DEL PRODUCTO" />
                   <TextField fx:id="txtProductName" prefHeight="25.0" prefWidth="117.0" />
                </children>
             </HBox>
+            
+            <!-- Precio de Costo -->
             <HBox prefHeight="66.0" prefWidth="307.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="198.0" text="PRECIO DE COSTO" />
                   <TextField fx:id="txtCostPrice" prefHeight="25.0" prefWidth="116.0" />
                </children>
             </HBox>
+            
+            <!-- Precio de Venta -->
             <HBox prefHeight="58.0" prefWidth="307.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="239.0" text="PRECIO DE VENTA" />
                   <TextField fx:id="txtSalePrice" />
                </children>
             </HBox>
+            
+            <!-- Stock -->
             <HBox prefHeight="53.0" prefWidth="307.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="247.0" text="STOCK" />
                   <TextField fx:id="txtStock" />
                </children>
             </HBox>
+            
+            <!-- Categoría -->
             <HBox prefHeight="47.0" prefWidth="307.0">
                <children>
-                  <Label prefHeight="17.0" prefWidth="226.0" text="CATEGORIA" />
+                  <Label prefHeight="17.0" prefWidth="226.0" text="CATEGORÍA" />
                   <ComboBox fx:id="cmbCategory" prefWidth="150.0" />
                </children>
             </HBox>
+            
+            <!-- Botón de Registro -->
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnRegisterProduct" mnemonicParsing="false" text="REGISTRAR PRODUCTO" />
+                  <Button fx:id="btnRegisterProduct" mnemonicParsing="false" onAction="#handleRegisterProduct" text="REGISTRAR PRODUCTO" />
                </children>
             </HBox>
          </children>
       </VBox>
    </center>
+   
    <left>
       <Pane prefHeight="431.0" prefWidth="20.0" BorderPane.alignment="CENTER" />
    </left>
+   
    <right>
       <Pane prefHeight="431.0" prefWidth="19.0" BorderPane.alignment="CENTER" />
    </right>
