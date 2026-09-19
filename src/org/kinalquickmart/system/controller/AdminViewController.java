@@ -56,19 +56,23 @@ public class AdminViewController implements Initializable {
         readProduct();
     }
 
-    
+
     @FXML
     private void handleCreateProduct() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/RegisterProductView.fxml"));
             Parent root = loader.load();
+
             Stage stage = new Stage();
             stage.setTitle("QuickMart - Registro de Productos");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
+
+
         } catch (IOException e) {
-            alertInfo.viewAlert("ERROR", "Error al abrir ventana", "No se pudo abrir la ventana de registro.", "Error de navegación");
+            System.err.println("Error al abrir ventana de registro: " + e.getMessage());
+
             e.printStackTrace();
         }
     }
