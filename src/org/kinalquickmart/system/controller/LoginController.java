@@ -1,5 +1,10 @@
 package org.kinalquickmart.system.controller;
 
+import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,22 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-=======
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import java.sql.Connection;
-import java.sql.CallableStatement;
-import java.io.IOException;
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
-import java.sql.ResultSet;
 
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
@@ -53,7 +43,6 @@ public class LoginController {
         // 1. Validar que los campos no estén vacíos
         if (correo.isEmpty() || password.isEmpty()) {
             alertInfo.viewAlert(
-<<<<<<< HEAD
                 "WARNING",
                 "Campos vacíos",
                 "Por favor, ingresa tu correo y contraseña.",
@@ -78,41 +67,25 @@ public class LoginController {
                 "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
                 "Error de autenticación"
             );
-            txtPassword.clear(); // Limpiar solo la contraseña para reintentar
+            txtPassword.clear(); 
         }
     }
-=======
-                    "",
-                    "Campos vacíos",
-                    "Por favor, ingresa tu correo y contraseña.",
-                    "Validación de campos"
-            );
-            return;
-        } else {
-            alertInfo.viewAlert(
-                    "ERROR",
-                    "Credenciales Incorrectas",
-                    "Error, USUARIO NO ENCONTRADO",
-                    "Error de autenticación"
-            );
-            txtPassword.clear();
-        }
-    }
-    
- 
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
 
+    // --- AQUÍ ESTÁ LA CORRECCIÓN CLAVE ---
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
-<<<<<<< HEAD
-        // Try-with-resources para asegurar el cierre automático de recursos
-        try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
-=======
-        try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
+        // 1. Obtener la conexión FUERA del try para que NO se cierre automáticamente
+        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+        
+        if (conn == null) {
+            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
+            return false;
+        }
 
+        // 2. Solo el CallableStatement y ResultSet van DENTRO del try
+        try (CallableStatement cs = conn.prepareCall(sql)) {
+            
             cs.setString(1, correo);
             cs.setString(2, password);
 
@@ -123,22 +96,14 @@ public class LoginController {
         } catch (Exception e) {
             e.printStackTrace();
             alertInfo.viewAlert(
-<<<<<<< HEAD
                 "ERROR",
                 "Error de Base de Datos",
                 "No se pudo conectar: " + e.getMessage(),
                 "Error de conexión"
-=======
-                    "ERROR",
-                    "Error de Base de Datos",
-                    "No se pudo conectar: " + e.getMessage(),
-                    "Error de conexión"
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
             );
             return false;
         }
     }
-<<<<<<< HEAD
 
     private void navegarAdminView() {
         try {
@@ -164,7 +129,3 @@ public class LoginController {
         }
     }
 }
-=======
-    
-}
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))

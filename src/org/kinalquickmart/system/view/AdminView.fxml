@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminController">
-            
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
@@ -22,50 +21,23 @@
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-<<<<<<< HEAD
-            
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="16.0" prefWidth="154.0" />
-            
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            
             <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutUser" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SESIÓN">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
-            
-            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
-=======
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Pane prefHeight="16.0" prefWidth="154.0" />
-            <Button fx:id="btndelete" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutSesion" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SESION">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Pane prefHeight="17.0" prefWidth="154.0" />
-            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTION DE USUARIOS" />
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
+            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#gestionUsuarios" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
    </left>
-   
    <top>
       <Pane prefHeight="46.0" prefWidth="600.0" styleClass="admin-header" BorderPane.alignment="CENTER">
          <children>
@@ -81,34 +53,24 @@
          </children>
       </Pane>
    </top>
-   
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="admin-content" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
                   <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchProduct" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
-<<<<<<< HEAD
                   <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="371.0" />
                </children>
             </HBox>
-            
             <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="colName" prefWidth="150.0" text="Nombre" />
-                <TableColumn fx:id="colCategory" prefWidth="100.0" text="Categoría" />
+                <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
+                <TableColumn fx:id="colCategoria" prefWidth="100.0" text="Categoría" />
                 <TableColumn fx:id="colStock" prefWidth="50.0" text="Stock" />
-                <TableColumn fx:id="colPrice" prefWidth="75.0" text="Precio" />
+                <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
               </columns>
             </TableView>
-            
-=======
-                  <TextField fx:id="txtSearchBar" onAction="#searchBarProduct" prefHeight="25.0" prefWidth="371.0" />
-               </children>
-            </HBox>
-            <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table" />
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
          </children>
       </VBox>
    </center>

@@ -12,10 +12,7 @@ public class Product {
     private int currentStock;
     private Category category;
 
-<<<<<<< HEAD
 
-=======
->>>>>>> ed9ae60 (Hice el controlador de la vista del administrados (inventario))
     public Product() {
     }
 
