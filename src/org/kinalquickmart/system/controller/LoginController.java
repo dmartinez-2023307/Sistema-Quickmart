@@ -16,8 +16,11 @@ import java.sql.ResultSet;
 
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
+import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class LoginController {
+
+    private static final String RUTA_VISTAS = "/org/kinalquickmart/system/view/";
 
     private final AlertInformation alertInfo = new AlertInformation();
 
@@ -51,69 +54,96 @@ public class LoginController {
             return;
         }
 
-        // 2. Validar credenciales en la base de datos
-        if (validarCredenciales(correo, password)) {
-            alertInfo.viewAlert(
-                "INFORMATION",
-                "Inicio de Sesión Exitoso",
-                "¡Bienvenido al sistema!",
-                "Éxito"
-            );
-            navegarAdminView();
-        } else {
-            alertInfo.viewAlert(
-                "ERROR",
-                "Credenciales Incorrectas",
-                "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
-                "Error de autenticación"
-            );
-            txtPassword.clear(); // Limpiar solo la contraseña para reintentar
-        }
-    }
-
-    private boolean validarCredenciales(String correo, String password) {
-        String sql = "{CALL sp_validarLogin(?, ?)}";
-
-        // ⚠️ CORRECCIÓN CLAVE: Obtener la conexión FUERA del try-with-resources
+        // 2. Validar credenciales contra la base de datos
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        
         if (conn == null) {
             alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
-            return false;
+            return;
         }
 
-        // Solo el CallableStatement y ResultSet se cierran automáticamente aquí
-        try (CallableStatement cs = conn.prepareCall(sql)) {
+        try (CallableStatement cs = conn.prepareCall("{CALL sp_validarLogin(?)}")) {
             cs.setString(1, correo);
-            cs.setString(2, password);
 
             try (ResultSet rs = cs.executeQuery()) {
-                // Si rs.next() es true, encontró el usuario y la contraseña coincide
-                return rs.next(); 
+                // Correo inexistente o contraseña que no coincide con el hash guardado
+                if (!rs.next() || !PasswordUtil.verificar(password, rs.getString("password"))) {
+                    alertInfo.viewAlert(
+                        "ERROR",
+                        "Credenciales Incorrectas",
+                        "El correo o la contraseña no son válidos.",
+                        "Error de autenticación"
+                    );
+                    txtPassword.clear(); // Limpiar solo la contraseña para reintentar
+                    return;
+                }
+
+                // Credenciales correctas, pero la cuenta fue desactivada
+                if (!rs.getBoolean("activo")) {
+                    alertInfo.viewAlert(
+                        "ERROR",
+                        "Usuario Inactivo",
+                        "Tu cuenta está inactiva. Contacta al administrador.",
+                        "Error de autenticación"
+                    );
+                    txtPassword.clear();
+                    return;
+                }
+
+                String nombre = rs.getString("nombre_completo");
+                String rol = rs.getString("rol");
+
+                // 3. Redirigir a la vista que corresponde al rol obtenido de la BD
+                navegarSegunRol(rol, nombre);
             }
         } catch (Exception e) {
             e.printStackTrace();
             alertInfo.viewAlert(
                 "ERROR",
                 "Error de Base de Datos",
-                "No se pudo conectar: " + e.getMessage(),
+                "No se pudo validar el usuario: " + e.getMessage(),
                 "Error de conexión"
             );
-            return false;
         }
     }
 
-    private void navegarAdminView() {
+    /** Elige la vista según el rol (ENUM de la tabla Usuario) y cambia la escena. */
+    private void navegarSegunRol(String rol, String nombre) {
+        String vista;
+        String titulo;
+
+        switch (rol) {
+            case "Administrador" -> {
+                vista = "AdminView.fxml";
+                titulo = "QuickMart - Panel de Administrador";
+            }
+            case "Bodeguero" -> {
+                vista = "WineryView.fxml";
+                titulo = "QuickMart - Bodega";
+            }
+            case "Cajero" -> {
+                vista = "CashierView.fxml";
+                titulo = "QuickMart - Caja";
+            }
+            default -> {
+                alertInfo.viewAlert(
+                    "ERROR",
+                    "Rol no reconocido",
+                    "El rol \"" + rol + "\" no tiene una vista asignada.",
+                    "Error de autenticación"
+                );
+                return;
+            }
+        }
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/AdminView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + vista));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             // Obtener la ventana actual y cambiar la escena
             Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
-            stage.setTitle("QuickMart - Panel de Administrador");
-            stage.setScene(scene);
-            stage.setResizable(false); // Opcional: evita que el usuario redimensione la ventana
+            stage.setTitle(titulo);
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
 
         } catch (IOException e) {
@@ -121,9 +151,10 @@ public class LoginController {
             alertInfo.viewAlert(
                 "ERROR",
                 "Error de Navegación",
-                "No se pudo cargar el panel de administrador: " + e.getMessage(),
+                "No se pudo cargar la vista de " + rol + ": " + e.getMessage(),
                 "Error del sistema"
             );
         }
     }
 }
+ 
