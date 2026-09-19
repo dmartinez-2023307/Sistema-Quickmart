@@ -12,6 +12,7 @@ public class Product {
     private int currentStock;
     private Category category;
 
+
     public Product() {
     }
 

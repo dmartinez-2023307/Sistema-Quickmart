@@ -13,32 +13,32 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminController">
             
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#createProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREATE">
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleCreateProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDIT">
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="16.0" prefWidth="154.0" />
             
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="DELETE">
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutUser" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="LOGOUT">
+            <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#logOutUser" prefHeight="31.0" prefWidth="141.0" styleClass="admin-logout" text="CERRAR SESIÓN">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="USER MANAGEMENT" />
+            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
@@ -53,7 +53,7 @@
                   <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
-            <Label layoutX="238.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTORY">
+            <Label layoutX="238.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTARIO">
                <font><Font size="20.0" /></font>
             </Label>
          </children>
@@ -65,7 +65,7 @@
          <children>
             <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
-                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchProduct" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="SEARCH" />
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#searchProduct" prefHeight="33.0" prefWidth="154.0" styleClass="admin-search-button" text="BUSCAR" />
                   <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="371.0" />
                </children>
             </HBox>
@@ -73,10 +73,10 @@
             <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="colName" prefWidth="150.0" text="Name" />
-                <TableColumn fx:id="colCategory" prefWidth="100.0" text="Category" />
+                <TableColumn fx:id="colName" prefWidth="150.0" text="Nombre" />
+                <TableColumn fx:id="colCategory" prefWidth="100.0" text="Categoría" />
                 <TableColumn fx:id="colStock" prefWidth="50.0" text="Stock" />
-                <TableColumn fx:id="colPrice" prefWidth="75.0" text="Price" />
+                <TableColumn fx:id="colPrice" prefWidth="75.0" text="Precio" />
               </columns>
             </TableView>
             

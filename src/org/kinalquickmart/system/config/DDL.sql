@@ -198,7 +198,7 @@ BEGIN
     ORDER BY p.nombre_comercial;
 END $$
 
-CREATE PROCEDURE sp_buscarProducto(IN p_text VARCHAR(50) )
+CREATE PROCEDURE sp_buscarProducto(IN p_text VARCHAR(50))
 BEGIN
     SELECT
         p.id_producto,
@@ -209,11 +209,9 @@ BEGIN
         c.nombre_categoria
     FROM Producto p
     LEFT JOIN Categoria c ON p.id_categoria = c.id_categoria
-    WHERE p.codigo_barras like '%1001%'
-		or p.codigo_barras like '%2001%'
-        or p.codigo_barras like '%3001%'
-        or p.codigo_barras like '%4001%'
-        or p.codigo_barras like '%5001%' or c.categoria = p_text;
+    WHERE p.codigo_barras LIKE CONCAT('%', p_text, '%')
+       OR p.nombre_comercial LIKE CONCAT('%', p_text, '%')
+       OR c.nombre_categoria LIKE CONCAT('%', p_text, '%');
 END $$
 
 
