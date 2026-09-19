@@ -75,6 +75,7 @@ public class LoginController {
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
+
         // 1. Obtener la conexión FUERA del try para que NO se cierre automáticamente
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
@@ -82,6 +83,7 @@ public class LoginController {
             alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
             return false;
         }
+
 
         // 2. Solo el CallableStatement y ResultSet van DENTRO del try
         try (CallableStatement cs = conn.prepareCall(sql)) {

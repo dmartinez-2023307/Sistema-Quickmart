@@ -10,7 +10,7 @@ public class ConexionDB {
     private Connection connection;
 
     public Connection getConnection() {
-        return this.connection;
+        return this.connection; 
     }
     
     private ConexionDB() {

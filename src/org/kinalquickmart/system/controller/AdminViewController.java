@@ -56,6 +56,7 @@ public class AdminViewController implements Initializable {
         configurarTabla();
         readProduct(); // Cargar datos al iniciar
         
+        // Búsqueda en tiempo real
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
             searchProduct(null);
         });
@@ -94,7 +95,6 @@ public class AdminViewController implements Initializable {
             "Editar");
     }
 
-   
     @FXML
     private void deleteProduct() {
         Product product = getSelectedProduct();
@@ -115,7 +115,7 @@ public class AdminViewController implements Initializable {
             alertInfo.viewAlert("INFORMATION", "Success",
                 "Product deleted successfully.", "Deletion");
 
-            readProduct();
+            readProduct(); // Recargar la tabla
             
             cs.close();
 
@@ -131,7 +131,7 @@ public class AdminViewController implements Initializable {
         String searchText = txtSearch.getText().trim();
         
         if (searchText.isEmpty()) {
-            readProduct();
+            readProduct(); // Si está vacío, recargar todo
             return;
         }
         
@@ -194,7 +194,7 @@ public class AdminViewController implements Initializable {
     }
 
     @FXML
-    private void gestionUsuarios() {
+    private void managementUser() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
             Parent root = loader.load();
@@ -248,7 +248,7 @@ public class AdminViewController implements Initializable {
                 producto.setCurrentStock(rs.getInt("stock_actual"));
                 
                 Category cat = new Category();
-                cat.setName(rs.getString("nombre_categoria")); 
+                cat.setName(rs.getString("nombre_categoria"));
                 producto.setCategory(cat);
                 
                 listaProductos.add(producto);
@@ -258,16 +258,4 @@ public class AdminViewController implements Initializable {
             System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
         } catch (Exception e) {
-            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
-            e.printStackTrace();
-        }
-    }
-    
-    private Product getSelectedProduct() {
-        Product selected = inventoryTable.getSelectionModel().getSelectedItem();
-        if (selected == null) {
-            alertInfo.viewAlert("WARNING", "Sin selección", "Por favor, selecciona un producto de la tabla primero.", "Atención");
-        }
-        return selected;
-    }
-}
+            alertInfo.viewAlert("ERROR", "Error de Base
