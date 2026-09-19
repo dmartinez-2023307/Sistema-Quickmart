@@ -1,4 +1,4 @@
-                   /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -72,29 +72,24 @@ public class AdminViewController {
     @FXML
     public void initialize() {
     }
-    
+
     @FXML
-private void handleCreateProduct() {
-    try {
-        // Cargar la vista de registro de productos
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/RegisterProductView.fxml"));
-        Parent root = loader.load();
-        // Crear una nueva ventana independiente
-        Stage stage = new Stage();
-        stage.setTitle("QuickMart - Registro de Productos");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
-    } catch (IOException e) {
-        alertInfo.viewAlert(
-            "ERROR",
-            "Error al abrir ventana",
-            "No se pudo abrir la ventana de registro de productos.",
-            "Error de navegación"
-        );
-        e.printStackTrace();
+    private void handleCreateProduct() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/RegisterProductView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("QuickMart - Registro de Productos");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            System.err.println("Error al abrir ventana de registro: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-}
 
     @FXML
     private void editProduct() {
