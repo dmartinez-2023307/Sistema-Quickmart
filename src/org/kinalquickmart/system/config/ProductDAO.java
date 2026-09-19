@@ -25,10 +25,10 @@ public class ProductDAO {
             return true;
             
         } catch (SQLIntegrityConstraintViolationException e) {
-            System.err.println("Error: El código de barras ya existe en la base de datos.");
-            return false; 
+            System.err.println("Error: El código de barras ya existe.");
+            return false;
         } catch (SQLException e) {
-            System.err.println("Error de base de datos al guardar producto: " + e.getMessage());
+            System.err.println("Error al guardar producto: " + e.getMessage());
             return false;
         }
     }
