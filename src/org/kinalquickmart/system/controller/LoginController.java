@@ -74,10 +74,16 @@ public class LoginController {
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
-        // Try-with-resources para asegurar el cierre automático de recursos
-        try (Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-             CallableStatement cs = conn.prepareCall(sql)) {
+        // ⚠️ CORRECCIÓN CLAVE: Obtener la conexión FUERA del try-with-resources
+        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+        
+        if (conn == null) {
+            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
+            return false;
+        }
 
+        // Solo el CallableStatement y ResultSet se cierran automáticamente aquí
+        try (CallableStatement cs = conn.prepareCall(sql)) {
             cs.setString(1, correo);
             cs.setString(2, password);
 
