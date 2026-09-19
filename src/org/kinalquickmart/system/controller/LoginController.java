@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
+import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class LoginController {
+
+    private static final String RUTA_VISTAS = "/org/kinalquickmart/system/view/";
 
     private final AlertInformation alertInfo = new AlertInformation();
 
@@ -52,82 +55,41 @@ public class LoginController {
         }
 
         // 2. Validar credenciales en la base de datos
-        if (validarCredenciales(correo, password)) {
-            alertInfo.viewAlert(
-                "INFORMATION",
-                "Inicio de Sesión Exitoso",
-                "¡Bienvenido al sistema!",
-                "Éxito"
-            );
-            navegarAdminView();
-        } else {
-            alertInfo.viewAlert(
-                "ERROR",
-                "Credenciales Incorrectas",
-                "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
-                "Error de autenticación"
-            );
-            txtPassword.clear(); 
-        }
+        validarCredenciales(correo, password);
     }
 
-    // --- AQUÍ ESTÁ LA CORRECCIÓN CLAVE ---
-    private boolean validarCredenciales(String correo, String password) {
+    // --- LÓGICA DE VALIDACIÓN ROBUSTA ---
+    private void validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
-
 
         // 1. Obtener la conexión FUERA del try para que NO se cierre automáticamente
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        
         if (conn == null) {
             alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
-            return false;
+            return;
         }
-
 
         // 2. Solo el CallableStatement y ResultSet van DENTRO del try
         try (CallableStatement cs = conn.prepareCall(sql)) {
-            
             cs.setString(1, correo);
-            cs.setString(2, password);
+            cs.setString(2, password); // Parámetro necesario para el SP
 
             try (ResultSet rs = cs.executeQuery()) {
-                // Si rs.next() es true, encontró el usuario y la contraseña coincide
-                return rs.next(); 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertInfo.viewAlert(
-                "ERROR",
-                "Error de Base de Datos",
-                "No se pudo conectar: " + e.getMessage(),
-                "Error de conexión"
-            );
-            return false;
-        }
-    }
+                // Correo inexistente o contraseña que no coincide con el hash guardado
+                if (!rs.next() || !PasswordUtil.verificar(password, rs.getString("password"))) {
+                    alertInfo.viewAlert(
+                        "ERROR",
+                        "Credenciales Incorrectas",
+                        "El correo o la contraseña no son válidos.",
+                        "Error de autenticación"
+                    );
+                    txtPassword.clear(); // Limpiar solo la contraseña para reintentar
+                    return;
+                }
 
-    private void navegarAdminView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/AdminView.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-
-            // Obtener la ventana actual y cambiar la escena
-            Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
-            stage.setTitle("QuickMart - Panel de Administrador");
-            stage.setScene(scene);
-            stage.setResizable(false); // Opcional: evita que el usuario redimensione la ventana
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            alertInfo.viewAlert(
-                "ERROR",
-                "Error de Navegación",
-                "No se pudo cargar el panel de administrador: " + e.getMessage(),
-                "Error del sistema"
-            );
-        }
-    }
-}
+                // Credenciales correctas, pero la cuenta fue desactivada
+                if (!rs.getBoolean("activo")) {
+                    alertInfo.viewAlert(
+                        "ERROR",
+                        "Usuario Inactivo",
+                        "
