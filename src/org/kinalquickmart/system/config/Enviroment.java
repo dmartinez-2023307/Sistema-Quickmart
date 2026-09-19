@@ -11,7 +11,6 @@ package org.kinalquickmart.system.config;
  */
 public class Enviroment {
     protected static final String USER = "root";
-
     protected static final String PASSWORD = "@dmin4AM";
 
     protected static final String DATA_BASE = "sistema_catalogo_in4am";

@@ -23,12 +23,12 @@
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEditProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
+            <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#editProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-edit" text="EDITAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="16.0" prefWidth="154.0" />
             
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDeleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
+            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-delete" text="ELIMINAR">
                <font><Font size="15.0" /></font>
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
@@ -38,6 +38,7 @@
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
+            <!-- CORREGIDO: onAction="#managementUser" para que coincida con el Java -->
             <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
@@ -73,10 +74,10 @@
             <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="colName" prefWidth="150.0" text="Nombre" />
-                <TableColumn fx:id="colCategory" prefWidth="100.0" text="Categoría" />
+                <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
+                <TableColumn fx:id="colCategoria" prefWidth="100.0" text="Categoría" />
                 <TableColumn fx:id="colStock" prefWidth="50.0" text="Stock" />
-                <TableColumn fx:id="colPrice" prefWidth="75.0" text="Precio" />
+                <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
               </columns>
             </TableView>
             

@@ -5,11 +5,14 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +33,7 @@ import org.kinalquickmart.system.utils.AlertInformation;
 public class AdminViewController implements Initializable {
 
     private final AlertInformation alertInfo = new AlertInformation();
-    private ObservableList<Product> listaProductos;
+    private ObservableList<Product> listaProductos = FXCollections.observableArrayList();
 
     @FXML private Button btnCreate;
     @FXML private Button btnEdit;
@@ -43,59 +46,136 @@ public class AdminViewController implements Initializable {
     
     @FXML private TableView<Product> inventoryTable;
     @FXML private TableColumn<Product, Integer> colId;
-    @FXML private TableColumn<Product, String> colName;
-    @FXML private TableColumn<Product, String> colCategory;
+    @FXML private TableColumn<Product, String> colNombre;
+    @FXML private TableColumn<Product, String> colCategoria;
     @FXML private TableColumn<Product, Integer> colStock;
-    @FXML private TableColumn<Product, BigDecimal> colPrice;
-
+    @FXML private TableColumn<Product, BigDecimal> colPrecio;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("✅ AdminViewController inicializado correctamente");
+    public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-        readProduct();
+        readProduct(); // Cargar datos al iniciar
+        
+        // Búsqueda en tiempo real
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchProduct(null);
+        });
     }
-
-
+    
     @FXML
     private void handleCreateProduct() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/RegisterProductView.fxml"));
             Parent root = loader.load();
-
             Stage stage = new Stage();
             stage.setTitle("QuickMart - Registro de Productos");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
-
-
         } catch (IOException e) {
-            System.err.println("Error al abrir ventana de registro: " + e.getMessage());
-
+            alertInfo.viewAlert("ERROR", "Error al abrir ventana", "No se pudo abrir la ventana de registro.", "Error de navegación");
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleEditProduct() {
-        alertInfo.viewAlert("INFORMATION", "Editar Producto", "Función en desarrollo", "Aviso");
+    private void editProduct() {
+        Product product = getSelectedProduct();
+        if (product == null) return;
+
+        String catName = (product.getCategory() != null) ? product.getCategory().getName() : "Sin categoría";
+        
+        alertInfo.viewAlert("INFORMATION", "Editar Producto",
+            "ID: " + product.getId() + "\n" +
+            "Nombre: " + product.getCommercialName() + "\n" +
+            "Categoría: " + catName + "\n" +
+            "Stock: " + product.getCurrentStock() + "\n" +
+            "Precio Venta: $" + product.getSalePrice() + "\n\n" +
+            "(El formulario de edición se abrirá aquí)",
+            "Editar");
     }
 
     @FXML
-    private void handleDeleteProduct() {
-        alertInfo.viewAlert("WARNING", "Eliminar Producto", "¿Estás seguro de eliminar el producto seleccionado?", "Confirmación");
+    private void deleteProduct() {
+        Product product = getSelectedProduct();
+        if (product == null) return;
+
+        alertInfo.viewAlert("WARNING", "Confirm Deletion",
+            "Are you sure you want to delete the product: " + product.getCommercialName() + "?",
+            "Delete Product");
+
+        String sql = "{CALL sp_eliminarProducto(?)}";
+
+        try {
+            Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+            CallableStatement cs = conn.prepareCall(sql);
+            cs.setInt(1, product.getId());
+            cs.executeUpdate();
+
+            alertInfo.viewAlert("INFORMATION", "Success",
+                "Product deleted successfully.", "Deletion");
+
+            readProduct(); // Recargar la tabla
+            
+            cs.close();
+
+        } catch (Exception e) {
+            alertInfo.viewAlert("ERROR", "Database Error",
+                "Could not delete: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    private void searchProduct() {
-        String busqueda = txtSearch.getText().trim();
-        if (busqueda.isEmpty()) {
-            alertInfo.viewAlert("WARNING", "Campo vacío", "Ingresa un término de búsqueda", "Validación");
+    private void searchProduct(ActionEvent event) {
+        String searchText = txtSearch.getText().trim();
+        
+        if (searchText.isEmpty()) {
+            readProduct(); // Si está vacío, recargar todo
             return;
         }
-        System.out.println("🔍 Buscando en base de datos: " + busqueda);
-        // TODO: Implementar filtro llamando a sp_buscarProducto(busqueda)
+        
+        String sql = "{CALL sp_buscarProducto(?)}";
+        // 1. Obtener conexión FUERA del try
+        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+        
+        if (conn == null) {
+            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
+            return;
+        }
+
+        // 2. Solo el PreparedStatement va en el try
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, searchText);
+            
+            // 3. El ResultSet en un try anidado
+            try (ResultSet rs = ps.executeQuery()) {
+                listaProductos.clear();
+                
+                while (rs.next()) {
+                    Product producto = new Product();
+                    producto.setId(rs.getInt("id_producto"));
+                    producto.setBarCode(rs.getString("codigo_barras"));
+                    producto.setCommercialName(rs.getString("nombre_comercial"));
+                    producto.setSalePrice(rs.getBigDecimal("precio_venta"));
+                    producto.setCurrentStock(rs.getInt("stock_actual"));
+                    producto.setCostPrice(BigDecimal.ZERO); 
+                    
+                    Category cat = new Category();
+                    cat.setName(rs.getString("nombre_categoria"));
+                    producto.setCategory(cat);
+                    
+                    listaProductos.add(producto);
+                }
+                
+                inventoryTable.setItems(listaProductos);
+                System.out.println("✅ Productos encontrados: " + listaProductos.size());
+            }
+        } catch (SQLException e) {
+            System.err.println(" Error al buscar producto: " + e.getMessage());
+            e.printStackTrace();
+            alertInfo.viewAlert("ERROR", "Error de Búsqueda", "No se pudo buscar: " + e.getMessage(), "Error");
+        }
     }
 
     @FXML
@@ -128,29 +208,23 @@ public class AdminViewController implements Initializable {
         }
     }
 
-
-
     private void configurarTabla() {
-        // Los strings deben coincidir EXACTAMENTE con los nombres de los atributos en Product.java
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("commercialName"));
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("commercialName"));
         
-        // Como 'category' es un objeto, extraemos su nombre para mostrarlo como texto en la columna
-        colCategory.setCellValueFactory(cellData -> {
+        colCategoria.setCellValueFactory(cellData -> {
             Category cat = cellData.getValue().getCategory();
             String nombreCat = (cat != null && cat.getName() != null) ? cat.getName() : "Sin categoría";
             return new javafx.beans.property.SimpleStringProperty(nombreCat);
         });
         
         colStock.setCellValueFactory(new PropertyValueFactory<>("currentStock"));
-        colPrice.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
     }
 
     private void readProduct() {
-        // Nombre exacto del procedimiento almacenado definido en tu DDL
         String sql = "{CALL sp_listarProductos()}";
-
-        // 1. OBTENER LA CONEXIÓN FUERA DEL TRY
+        // 1. Obtener conexión FUERA del try
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
         if (conn == null) {
@@ -158,16 +232,14 @@ public class AdminViewController implements Initializable {
             return;
         }
 
-        // 2. SOLO CallableStatement y ResultSet van DENTRO del try-with-resources
+        // 2. Solo CallableStatement y ResultSet van en el try
         try (CallableStatement cs = conn.prepareCall(sql); 
              ResultSet rs = cs.executeQuery()) {
 
-            listaProductos = FXCollections.observableArrayList();
+            listaProductos.clear();
             
             while (rs.next()) {
                 Product producto = new Product();
-                
-                // Usamos los setters EXACTOS de tu clase Product.java
                 producto.setId(rs.getInt("id_producto"));
                 producto.setBarCode(rs.getString("codigo_barras"));
                 producto.setCommercialName(rs.getString("nombre_comercial"));
@@ -175,21 +247,15 @@ public class AdminViewController implements Initializable {
                 producto.setSalePrice(rs.getBigDecimal("precio_venta"));
                 producto.setCurrentStock(rs.getInt("stock_actual"));
                 
-                // Creamos un objeto Category temporal con el nombre que nos devuelve el JOIN del SP
                 Category cat = new Category();
-                cat.setName(rs.getString("nombre_categoria")); 
+                cat.setName(rs.getString("nombre_categoria"));
                 producto.setCategory(cat);
                 
                 listaProductos.add(producto);
             }
             
-            // Asignamos la lista a la tabla
             inventoryTable.setItems(listaProductos);
-            System.out.println("✅ Total de productos cargados en tabla: " + listaProductos.size());
+            System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
         } catch (Exception e) {
-            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
-            e.printStackTrace();
-        }
-    }
-}
+            alertInfo.viewAlert("ERROR", "Error de Base

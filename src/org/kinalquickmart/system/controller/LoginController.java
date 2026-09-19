@@ -1,5 +1,10 @@
 package org.kinalquickmart.system.controller;
 
+import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,11 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
@@ -67,14 +67,16 @@ public class LoginController {
                 "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
                 "Error de autenticación"
             );
-            txtPassword.clear(); // Limpiar solo la contraseña para reintentar
+            txtPassword.clear(); 
         }
     }
 
+    // --- AQUÍ ESTÁ LA CORRECCIÓN CLAVE ---
     private boolean validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
 
-        // ⚠️ CORRECCIÓN CLAVE: Obtener la conexión FUERA del try-with-resources
+
+        // 1. Obtener la conexión FUERA del try para que NO se cierre automáticamente
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
         if (conn == null) {
@@ -82,8 +84,10 @@ public class LoginController {
             return false;
         }
 
-        // Solo el CallableStatement y ResultSet se cierran automáticamente aquí
+
+        // 2. Solo el CallableStatement y ResultSet van DENTRO del try
         try (CallableStatement cs = conn.prepareCall(sql)) {
+            
             cs.setString(1, correo);
             cs.setString(2, password);
 
