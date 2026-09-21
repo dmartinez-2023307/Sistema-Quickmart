@@ -35,19 +35,27 @@
          <children>
             <HBox prefHeight="36.0" prefWidth="432.0" styleClass="cashier-search">
                <children>
-                  <Button mnemonicParsing="false" styleClass="cashier-search-button" text="BUSCAR" />
-                  <TextField prefHeight="25.0" prefWidth="191.0" />
+                  <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleSearch" styleClass="cashier-search-button" text="BUSCAR" />
+                  <TextField fx:id="txtSearch" prefHeight="25.0" prefWidth="191.0" />
                </children>
             </HBox>
             <HBox prefHeight="284.0" prefWidth="505.0">
                <children>
-                  <TableView prefHeight="327.0" prefWidth="250.0" styleClass="cashier-products-table" />
+                  <TableView fx:id="tblCatalog" onMouseClicked="#handleAddToTicket" prefHeight="327.0" prefWidth="250.0" styleClass="cashier-products-table">
+                     <columns>
+                        <TableColumn fx:id="colCatalogCode" prefWidth="75.0" text="Código" />
+                        <TableColumn fx:id="colCatalogName" prefWidth="75.0" text="Producto" />
+                        <TableColumn fx:id="colCatalogPrice" prefWidth="75.0" text="Precio" />
+                        <TableColumn fx:id="colCatalogStock" prefWidth="75.0" text="Stock" />
+                     </columns></TableView>
                   <Pane prefHeight="269.0" prefWidth="16.0" />
-                  <TableView prefHeight="240.0" prefWidth="228.0" styleClass="cashier-cart-table">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
+                  <TableView fx:id="tblTicket" prefHeight="240.0" prefWidth="228.0" styleClass="cashier-cart-table">
+                     <columns>
+                        <TableColumn fx:id="colTicketName" prefWidth="75.0" text="Producto" />
+                        <TableColumn fx:id="colTicketPrice" prefWidth="75.0" text="P. Unitario" />
+                        <TableColumn fx:id="colTicketQty" prefWidth="75.0" text="Cant." />
+                        <TableColumn fx:id="colTicketSubtotal" prefWidth="75.0" text="Subtotal" />
+                     </columns>
                   </TableView>
                </children>
             </HBox>
@@ -59,10 +67,10 @@
                         <HBox prefHeight="30.0" prefWidth="237.0">
                            <children>
                               <Label prefHeight="17.0" prefWidth="49.0" text="TOTAL :" textOverrun="CLIP" />
-                              <Label text="Q0.00" />
+                              <Label fx:id="lblTotal" text="Q0.00" />
                            </children>
                         </HBox>
-                        <Button mnemonicParsing="false" styleClass="cashier-finish" text="FINALIZAR COMPRA" />
+                        <Button fx:id="btnFinalize" mnemonicParsing="false" onAction="#handleFinalize" styleClass="cashier-finish" text="FINALIZAR COMPRA" />
                      </children>
                   </VBox>
                </children>
