@@ -1,41 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package org.kinalquickmart.system.utils;
 
+import java.util.Optional;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-/**
- *
- * @author informatica
- */
+import javafx.scene.control.ButtonType;
+
 public class AlertInformation {
-    
-    public AlertInformation(){
-        
-    }
-    
-    
-     public void viewAlert(String tipo, String titulo, String mensaje, String encabezado) {
-        
-        AlertType tipoAlerta;
 
-        tipoAlerta = switch (tipo.toUpperCase()) {
-            case "INFORMATION" -> AlertType.INFORMATION;
-            case "WARNING" -> AlertType.WARNING;
-            case "ERROR" -> AlertType.ERROR;
-            case "CONFIRMATION" -> AlertType.CONFIRMATION;
-            case "NONE" -> AlertType.NONE;
-            default -> AlertType.NONE;
-        };
-
-        Alert alert = new Alert(tipoAlerta);
-        alert.setTitle(titulo);
-        alert.setHeaderText(encabezado);
-        alert.setContentText(mensaje);
+    public void viewAlert(String type, String title, String content, String header) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         
+        switch (type.toUpperCase()) {
+            case "WARNING":
+                alert = new Alert(Alert.AlertType.WARNING);
+                break;
+            case "ERROR":
+                alert = new Alert(Alert.AlertType.ERROR);
+                break;
+            case "CONFIRMATION":
+                alert = new Alert(Alert.AlertType.CONFIRMATION);
+                break;
+            default:
+                alert = new Alert(Alert.AlertType.INFORMATION);
+        }
+        
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public boolean viewConfirm(String type, String title, String content, String header) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }

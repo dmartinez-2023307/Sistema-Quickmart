@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:controller="org.kinalquickmart.system.controller.EmployeeManagementController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="employee-view" stylesheets="@../resources/style/EmployeeManagementStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="employee-view" stylesheets="@../resources/style/EmployeeManagementStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.EmployeeManagementController">
    <top>
       <Pane prefHeight="42.0" prefWidth="600.0" styleClass="employee-header" BorderPane.alignment="CENTER">
          <children>
@@ -46,7 +46,7 @@
                <children>
                   <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEdit" styleClass="employee-edit" text="EDITAR" />
                   <Pane prefHeight="100.0" prefWidth="34.0" />
-                  <Button fx:id="btnFire" mnemonicParsing="false" onAction="#handleFire" styleClass="employee-fire" text="DESPEDIR" />
+                  <Button fx:id="btnFire" mnemonicParsing="false" onAction="#handleDespedir" styleClass="employee-fire" text="DESPEDIR" />
                   <Pane prefHeight="100.0" prefWidth="33.0" />
                   <Button fx:id="btnRegisterNew" mnemonicParsing="false" onAction="#handleRegisterNew" styleClass="employee-register" text="REGISTRAR NUEVO EMPLEADO" />
                </children>

@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="316.0" styleClass="register-view" stylesheets="@../resources/style/RegisterEmployeeStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.RegisterEmployeeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="316.0" styleClass="register-view" stylesheets="@../resources/style/RegisterEmployeeStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.RegisterEmployeeController">
    <top>
       <Pane prefHeight="55.0" prefWidth="290.0" styleClass="register-header" BorderPane.alignment="CENTER">
          <children>
@@ -46,16 +47,16 @@
             <HBox prefHeight="52.0" prefWidth="281.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="121.0" text="CONTRASEÑA" />
-                  <TextField fx:id="txtPassword" prefHeight="25.0" prefWidth="149.0" styleClass="register-password" />
+                  <PasswordField fx:id="pwdPassword" prefHeight="31.0" prefWidth="146.0" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label prefHeight="17.0" prefWidth="122.0" text="ROL" />
-                  <ComboBox fx:id="cmbRol" prefHeight="25.0" prefWidth="148.0" styleClass="register-role" />
+                  <ComboBox fx:id="cmbRole" prefHeight="25.0" prefWidth="148.0" styleClass="register-role" />
                </children>
             </HBox>
-            <Button fx:id="btnRegister" mnemonicParsing="false" styleClass="register-button" text="REGISTRAR" />
+            <Button fx:id="btnRegisterUser" mnemonicParsing="false" onAction="#handleRegister" styleClass="register-button" text="REGISTRAR" />
          </children>
       </VBox>
    </center>
