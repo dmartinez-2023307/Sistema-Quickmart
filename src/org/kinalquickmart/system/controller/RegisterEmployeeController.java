@@ -104,7 +104,7 @@ public class RegisterEmployeeController implements Initializable {
         txtEmail.clear();
         txtPassword.clear();
         cmbRole.getSelectionModel().clearSelection();
-        txtFullName.requestFocus();
+        txtFullName.requestFocus(); 
     }
 
     private boolean camposVacios() {

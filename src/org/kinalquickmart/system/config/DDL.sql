@@ -1,6 +1,6 @@
-drop database if exists sistema_catalogo_in4am;
-create database sistema_catalogo_in4am;
-use sistema_catalogo_in4am;
+DROP DATABASE IF EXISTS sistema_catalogo_in4am;
+CREATE DATABASE sistema_catalogo_in4am;
+USE sistema_catalogo_in4am;
 
 CREATE TABLE Categoria (
     id_categoria INT AUTO_INCREMENT,
@@ -9,6 +9,7 @@ CREATE TABLE Categoria (
     CONSTRAINT PK_Categoria PRIMARY KEY (id_categoria),
     CONSTRAINT UQ_Categoria_Nombre UNIQUE (nombre_categoria)
 );
+
 CREATE TABLE Usuario (
     id_usuario INT AUTO_INCREMENT,
     correo VARCHAR(100) NOT NULL,
@@ -61,11 +62,9 @@ CREATE TABLE detalle_venta (
         REFERENCES Producto(id_producto)
 );
 
-
-
-
---  CATEGORIA
-
+-- ==========================================
+-- CATEGORIA
+-- ==========================================
 DELIMITER $$
 
 CREATE PROCEDURE sp_crearCategoria(
@@ -73,7 +72,7 @@ CREATE PROCEDURE sp_crearCategoria(
     IN p_descripcion VARCHAR(150)
 )
 BEGIN
-    INSERT INTO Categoria (nombre_categoria, descripcion )
+    INSERT INTO Categoria (nombre_categoria, descripcion)
     VALUES (p_nombre, p_descripcion);
     SELECT LAST_INSERT_ID() AS id_categoria;
 END $$
@@ -107,10 +106,9 @@ END $$
 
 DELIMITER ;
 
-
-
---  USUARIO
-
+-- ==========================================
+-- USUARIO
+-- ==========================================
 DELIMITER $$
 
 CREATE PROCEDURE sp_crearUsuario(
@@ -134,12 +132,18 @@ BEGIN
 END $$
 
 CREATE PROCEDURE sp_validarLogin(
-    IN p_correo VARCHAR(100)
+    IN p_correo VARCHAR(100),
+    IN p_password VARCHAR(255)
 )
 BEGIN
-    SELECT id_usuario, correo, password, nombre_completo, rol
+    SELECT 
+        id_usuario,
+        nombre_completo,
+        rol,
+        activo
     FROM Usuario
-    WHERE correo = p_correo
+    WHERE correo = p_correo 
+      AND password = p_password 
       AND activo = TRUE;
 END $$
 
@@ -162,8 +166,9 @@ END $$
 
 DELIMITER ;
 
+-- ==========================================
 -- PRODUCTO
-
+-- ==========================================
 DELIMITER $$
 
 CREATE PROCEDURE sp_crearProducto(
@@ -180,6 +185,9 @@ BEGIN
     SELECT LAST_INSERT_ID() AS id_producto;
 END $$
 
+DELIMITER $$
+
+
 CREATE PROCEDURE sp_listarProductos()
 BEGIN
     SELECT
@@ -189,12 +197,14 @@ BEGIN
         p.precio_costo,
         p.precio_venta,
         p.stock_actual,
+        c.id_categoria AS id_categoria,
         IFNULL(c.nombre_categoria, 'Sin categoría') AS nombre_categoria,
         (p.precio_venta - p.precio_costo) AS margen_ganancia
     FROM Producto p
     LEFT JOIN Categoria c ON p.id_categoria = c.id_categoria
     ORDER BY p.nombre_comercial;
 END $$
+
 
 CREATE PROCEDURE sp_buscarProducto(IN p_text VARCHAR(50))
 BEGIN
@@ -212,12 +222,12 @@ BEGIN
        OR c.nombre_categoria LIKE CONCAT('%', p_text, '%');
 END $$
 
-
 CREATE PROCEDURE sp_actualizarProducto(
     IN p_id INT,
     IN p_nombre VARCHAR(100),
     IN p_precio_costo DECIMAL(10,2),
     IN p_precio_venta DECIMAL(10,2),
+    IN p_stock INT,
     IN p_id_categoria INT
 )
 BEGIN
@@ -225,19 +235,11 @@ BEGIN
     SET nombre_comercial = p_nombre,
         precio_costo = p_precio_costo,
         precio_venta = p_precio_venta,
+        stock_actual = p_stock,
         id_categoria = p_id_categoria
     WHERE id_producto = p_id;
 END $$
 
-CREATE PROCEDURE sp_ajustarStock(
-    IN p_id INT,
-    IN p_cantidad INT
-)
-BEGIN
-    UPDATE Producto
-    SET stock_actual = stock_actual + p_cantidad
-    WHERE id_producto = p_id;
-END $$
 
 CREATE PROCEDURE sp_eliminarProducto(IN p_id INT)
 BEGIN
@@ -246,12 +248,11 @@ END $$
 
 DELIMITER ;
 
-
-
-
---  VENTA
-
+-- ==========================================
+-- VENTA
+-- ==========================================
 DELIMITER $$
+
 CREATE PROCEDURE sp_crearVenta(
     IN p_id_usuario INT,
     IN p_total DECIMAL(10,2)
@@ -284,7 +285,6 @@ BEGIN
     SET stock_actual = stock_actual - p_cantidad
     WHERE id_producto = p_id_producto;
 END $$
-
 
 CREATE PROCEDURE sp_listarVentas()
 BEGIN
