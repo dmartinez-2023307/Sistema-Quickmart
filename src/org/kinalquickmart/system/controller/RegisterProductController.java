@@ -76,7 +76,7 @@ public class RegisterProductController implements Initializable {
     }
 
     @FXML
-    private void handleRegister() {
+    private void handleRegisterProduct() {
         if (camposVacios()) {
             alertInfo.viewAlert(
                     "WARNING",

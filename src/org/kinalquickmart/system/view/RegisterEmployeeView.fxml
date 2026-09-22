@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="316.0" styleClass="register-view" stylesheets="@../resources/style/RegisterEmployeeStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="316.0" styleClass="register-view" stylesheets="@../resources/style/RegisterEmployeeStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.RegisterEmployeeController">
    <top>
       <Pane prefHeight="55.0" prefWidth="290.0" styleClass="register-header" BorderPane.alignment="CENTER">
          <children>
