@@ -81,7 +81,10 @@ public class AdminViewController implements Initializable {
     @FXML
     private void editProduct() {
         Product product = getSelectedProduct();
-        if (product == null) return;
+        if (product == null) {
+            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+            return;
+        }
 
         String catName = (product.getCategory() != null) ? product.getCategory().getName() : "Sin categoría";
         
@@ -90,38 +93,42 @@ public class AdminViewController implements Initializable {
             "Nombre: " + product.getCommercialName() + "\n" +
             "Categoría: " + catName + "\n" +
             "Stock: " + product.getCurrentStock() + "\n" +
-            "Precio Venta: $" + product.getSalePrice() + "\n\n" +
-            "(El formulario de edición se abrirá aquí)",
+            "Precio Venta: Q" + product.getSalePrice() + "\n\n" +
+            "(El formulario de edición se implementará aquí)",
             "Editar");
     }
 
     @FXML
     private void deleteProduct() {
         Product product = getSelectedProduct();
-        if (product == null) return;
+        if (product == null) {
+            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+            return;
+        }
 
-        alertInfo.viewAlert("WARNING", "Confirm Deletion",
-            "Are you sure you want to delete the product: " + product.getCommercialName() + "?",
-            "Delete Product");
+        alertInfo.viewAlert("WARNING", "Confirmar Eliminación",
+            "¿Estás seguro de que deseas eliminar el producto: " + product.getCommercialName() + "?",
+            "Eliminar Producto");
 
         String sql = "{CALL sp_eliminarProducto(?)}";
 
         try {
             Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-            CallableStatement cs = conn.prepareCall(sql);
-            cs.setInt(1, product.getId());
-            cs.executeUpdate();
-
-            alertInfo.viewAlert("INFORMATION", "Success",
-                "Product deleted successfully.", "Deletion");
-
-            readProduct(); // Recargar la tabla
             
-            cs.close();
+            // ✅ CORRECCIÓN: try-with-resources para cerrar el CallableStatement automáticamente
+            try (CallableStatement cs = conn.prepareCall(sql)) {
+                cs.setInt(1, product.getId());
+                cs.executeUpdate();
+
+                alertInfo.viewAlert("INFORMATION", "Éxito",
+                    "Producto eliminado correctamente.", "Eliminación");
+
+                readProduct(); // Recargar la tabla
+            }
 
         } catch (Exception e) {
-            alertInfo.viewAlert("ERROR", "Database Error",
-                "Could not delete: " + e.getMessage(), "Error");
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos",
+                "No se pudo eliminar: " + e.getMessage(), "Error");
             e.printStackTrace();
         }
     }
@@ -136,7 +143,6 @@ public class AdminViewController implements Initializable {
         }
         
         String sql = "{CALL sp_buscarProducto(?)}";
-        // 1. Obtener conexión FUERA del try
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
         if (conn == null) {
@@ -144,11 +150,9 @@ public class AdminViewController implements Initializable {
             return;
         }
 
-        // 2. Solo el PreparedStatement va en el try
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, searchText);
             
-            // 3. El ResultSet en un try anidado
             try (ResultSet rs = ps.executeQuery()) {
                 listaProductos.clear();
                 
@@ -169,10 +173,9 @@ public class AdminViewController implements Initializable {
                 }
                 
                 inventoryTable.setItems(listaProductos);
-                System.out.println("✅ Productos encontrados: " + listaProductos.size());
             }
         } catch (SQLException e) {
-            System.err.println(" Error al buscar producto: " + e.getMessage());
+            System.err.println("Error al buscar producto: " + e.getMessage());
             e.printStackTrace();
             alertInfo.viewAlert("ERROR", "Error de Búsqueda", "No se pudo buscar: " + e.getMessage(), "Error");
         }
@@ -186,6 +189,7 @@ public class AdminViewController implements Initializable {
             Stage stage = (Stage) btnLogOut.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("QuickMart - Login");
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo regresar al Login: " + e.getMessage(), "Error");
@@ -196,12 +200,16 @@ public class AdminViewController implements Initializable {
     @FXML
     private void managementUser() {
         try {
+            // ✅ CORRECCIÓN: Abrir en una ventana nueva (new Stage) para no perder el panel de Admin
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) btnManagementUser.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            
+            Stage stage = new Stage();
             stage.setTitle("QuickMart - Gestión de Empleados");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
+            
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
             e.printStackTrace();
@@ -224,7 +232,6 @@ public class AdminViewController implements Initializable {
 
     private void readProduct() {
         String sql = "{CALL sp_listarProductos()}";
-        // 1. Obtener conexión FUERA del try
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
         if (conn == null) {
@@ -232,7 +239,6 @@ public class AdminViewController implements Initializable {
             return;
         }
 
-        // 2. Solo CallableStatement y ResultSet van en el try
         try (CallableStatement cs = conn.prepareCall(sql); 
              ResultSet rs = cs.executeQuery()) {
 
@@ -255,11 +261,9 @@ public class AdminViewController implements Initializable {
             }
             
             inventoryTable.setItems(listaProductos);
-            System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
         } catch (Exception e) {
-
-          alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
             e.printStackTrace();
         }
     }
