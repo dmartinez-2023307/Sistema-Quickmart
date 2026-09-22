@@ -4,7 +4,7 @@ CALL sp_crearCategoria('Bebidas', 'Refrescos, jugos y agua');
 CALL sp_crearCategoria('Limpieza', 'Productos de aseo personal y del hogar');
 CALL sp_crearCategoria('Panadería', 'Pan, galletas y productos horneados');
 
-CALL sp_crearUsuario('admin@gmail.com', '12345', 'Pablo Us', 'Administrador');
+CALL sp_crearUsuario('admin@gmail.com', '$2a$12$xT5CWiOv3csyT9reKWnlaeB6J6DDSPPFnNgfv/kTGCy4T9KDfW1CC', 'Pablo Us', 'Administrador');
 
 
 -- LÁCTEOS
