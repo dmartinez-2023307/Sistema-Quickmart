@@ -80,65 +80,67 @@ public class AdminViewController implements Initializable {
     }
 
     @FXML
-private void editProduct() {
-    Product product = getSelectedProduct();
-    if (product == null) {
-        alertInfo.viewAlert("WARNING", "Advertencia", "Por favor, selecciona un producto de la tabla.", "Sin selección");
-        return;
+    private void editProduct() {
+        Product product = getSelectedProduct();
+        if (product == null) {
+            alertInfo.viewAlert("WARNING", "Advertencia", "Por favor, selecciona un producto de la tabla.", "Sin selección");
+            return;
+        }
+
+        try {
+            // 1. Cargar el FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
+            Parent root = loader.load();
+
+            // 2. Obtener el controlador y pasarle el producto seleccionado
+            EditProductController controller = loader.getController();
+            controller.setProduct(product);
+
+            // 3. Configurar y mostrar la nueva ventana (Stage)
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL); // Ventana modal (bloquea la principal)
+            stage.setTitle("Editar Producto: " + product.getCommercialName());
+            stage.setScene(new Scene(root));
+            
+            stage.showAndWait(); 
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
+        }
     }
-
-    try {
-        // 1. Cargar el FXML (Ajusta la ruta si tu carpeta de vistas se llama diferente, ej: /fxml/EditProduct.fxml)
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
-        Parent root = loader.load();
-
-        // 2. Obtener el controlador y pasarle el producto seleccionado
-        EditProductController controller = loader.getController();
-        controller.setProduct(product);
-
-        // 3. Configurar y mostrar la nueva ventana (Stage)
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL); // Ventana modal (bloquea la principal)
-        stage.setTitle("Editar Producto: " + product.getCommercialName());
-        stage.setScene(new Scene(root));
-        
-        stage.showAndWait(); 
-        
-
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
-    }
-}
 
     @FXML
     private void deleteProduct() {
         Product product = getSelectedProduct();
-        if (product == null) return;
+        if (product == null) {
+            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+            return;
+        }
 
-        alertInfo.viewAlert("WARNING", "Confirm Deletion",
-            "Are you sure you want to delete the product: " + product.getCommercialName() + "?",
-            "Delete Product");
+        alertInfo.viewAlert("WARNING", "Confirmar Eliminación",
+            "¿Estás seguro de que deseas eliminar el producto: " + product.getCommercialName() + "?",
+            "Eliminar Producto");
 
         String sql = "{CALL sp_eliminarProducto(?)}";
 
         try {
             Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-            CallableStatement cs = conn.prepareCall(sql);
-            cs.setInt(1, product.getId());
-            cs.executeUpdate();
-
-            alertInfo.viewAlert("INFORMATION", "Success",
-                "Product deleted successfully.", "Deletion");
-
-            readProduct(); // Recargar la tabla
             
-            cs.close();
+            // ✅ CORRECCIÓN: try-with-resources para cerrar el CallableStatement automáticamente
+            try (CallableStatement cs = conn.prepareCall(sql)) {
+                cs.setInt(1, product.getId());
+                cs.executeUpdate();
+
+                alertInfo.viewAlert("INFORMATION", "Éxito",
+                    "Producto eliminado correctamente.", "Eliminación");
+
+                readProduct(); // Recargar la tabla
+            }
 
         } catch (Exception e) {
-            alertInfo.viewAlert("ERROR", "Database Error",
-                "Could not delete: " + e.getMessage(), "Error");
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos",
+                "No se pudo eliminar: " + e.getMessage(), "Error");
             e.printStackTrace();
         }
     }
@@ -153,7 +155,6 @@ private void editProduct() {
         }
         
         String sql = "{CALL sp_buscarProducto(?)}";
-        // 1. Obtener conexión FUERA del try
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
         if (conn == null) {
@@ -161,11 +162,9 @@ private void editProduct() {
             return;
         }
 
-        // 2. Solo el PreparedStatement va en el try
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, searchText);
             
-            // 3. El ResultSet en un try anidado
             try (ResultSet rs = ps.executeQuery()) {
                 listaProductos.clear();
                 
@@ -186,10 +185,9 @@ private void editProduct() {
                 }
                 
                 inventoryTable.setItems(listaProductos);
-                System.out.println("✅ Productos encontrados: " + listaProductos.size());
             }
         } catch (SQLException e) {
-            System.err.println(" Error al buscar producto: " + e.getMessage());
+            System.err.println("Error al buscar producto: " + e.getMessage());
             e.printStackTrace();
             alertInfo.viewAlert("ERROR", "Error de Búsqueda", "No se pudo buscar: " + e.getMessage(), "Error");
         }
@@ -203,6 +201,7 @@ private void editProduct() {
             Stage stage = (Stage) btnLogOut.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("QuickMart - Login");
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo regresar al Login: " + e.getMessage(), "Error");
@@ -213,12 +212,16 @@ private void editProduct() {
     @FXML
     private void managementUser() {
         try {
+            // ✅ CORRECCIÓN: Abrir en una ventana nueva (new Stage) para no perder el panel de Admin
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
             Parent root = loader.load();
-            Stage stage = (Stage) btnManagementUser.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            
+            Stage stage = new Stage();
             stage.setTitle("QuickMart - Gestión de Empleados");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
+            
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
             e.printStackTrace();
@@ -240,44 +243,44 @@ private void editProduct() {
     }
 
     private void readProduct() {
-    String sql = "{CALL sp_listarProductos()}";
-    Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-    
-    if (conn == null) {
-        alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
-        return;
-    }
-
-    try (CallableStatement cs = conn.prepareCall(sql); 
-         ResultSet rs = cs.executeQuery()) {
-
-        listaProductos.clear();
+        String sql = "{CALL sp_listarProductos()}";
+        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         
-        while (rs.next()) {
-            Product producto = new Product();
-            producto.setId(rs.getInt("id_producto"));
-            producto.setBarCode(rs.getString("codigo_barras"));
-            producto.setCommercialName(rs.getString("nombre_comercial"));
-            producto.setCostPrice(rs.getBigDecimal("precio_costo"));
-            producto.setSalePrice(rs.getBigDecimal("precio_venta"));
-            producto.setCurrentStock(rs.getInt("stock_actual"));
-            
-            Category cat = new Category();
-            cat.setId(rs.getInt("id_categoria"));  // ✅ AGREGAR ESTA LÍNEA
-            cat.setName(rs.getString("nombre_categoria"));
-            producto.setCategory(cat);
-            
-            listaProductos.add(producto);
+        if (conn == null) {
+            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
+            return;
         }
-        
-        inventoryTable.setItems(listaProductos);
-        System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
-    } catch (Exception e) {
-        alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
-        e.printStackTrace();
+        try (CallableStatement cs = conn.prepareCall(sql); 
+             ResultSet rs = cs.executeQuery()) {
+
+            listaProductos.clear();
+            
+            while (rs.next()) {
+                Product producto = new Product();
+                producto.setId(rs.getInt("id_producto"));
+                producto.setBarCode(rs.getString("codigo_barras"));
+                producto.setCommercialName(rs.getString("nombre_comercial"));
+                producto.setCostPrice(rs.getBigDecimal("precio_costo"));
+                producto.setSalePrice(rs.getBigDecimal("precio_venta"));
+                producto.setCurrentStock(rs.getInt("stock_actual"));
+                
+                Category cat = new Category();
+                cat.setId(rs.getInt("id_categoria"));  // ✅ AGREGAR ESTA LÍNEA (de la rama ft/)
+                cat.setName(rs.getString("nombre_categoria"));
+                producto.setCategory(cat);
+                
+                listaProductos.add(producto);
+            }
+            
+            inventoryTable.setItems(listaProductos);
+            System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
+
+        } catch (Exception e) {
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
     }
-}
  
     private Product getSelectedProduct() {
         return inventoryTable.getSelectionModel().getSelectedItem();

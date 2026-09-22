@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.utils.AlertInformation;
+import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class LoginController {
 
@@ -52,69 +53,53 @@ public class LoginController {
     }
 
     private void validarCredenciales(String correo, String password) {
-        String sql = "{CALL sp_validarLogin(?, ?)}";
+    String sql = "{CALL sp_validarLogin(?)}";
 
-        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        if (conn == null) {
-            alertInfo.viewAlert(
-                "ERROR", 
-                "Error de Sistema", 
-                "No hay conexión a la base de datos.", 
-                "Error de conexión"
-            );
-            return;
-        }
+    Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+    if (conn == null) {
+        alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error de conexión");
+        return;
+    }
 
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setString(1, correo);
-            cs.setString(2, password);
+    try (CallableStatement cs = conn.prepareCall(sql)) {
+        cs.setString(1, correo);
 
-            try (ResultSet rs = cs.executeQuery()) {
-                // El Stored Procedure 'sp_validarLogin' ya valida la contraseña y que esté activo.
-                if (rs.next()) {
-                    String rol = rs.getString("rol");
-                    String nombre = rs.getString("nombre_completo");
-                    
-                    alertInfo.viewAlert(
-                        "INFORMATION",
-                        "Inicio de Sesión Exitoso",
-                        "¡Bienvenido al sistema, " + nombre + "!",
-                        "Éxito"
-                    );
-                    
-                    if ("Administrador".equalsIgnoreCase(rol)) {
-                        navegarAdminView();
-                    } else if ("Cajero".equalsIgnoreCase(rol)) {
-                        navegarCashierView();
-                    } else {
-                        alertInfo.viewAlert(
-                            "ERROR",
-                            "Rol no permitido",
-                            "Tu rol de usuario no tiene permisos para acceder al sistema.",
-                            "Acceso denegado"
-                        );
-                    }
-                } else {
-                    alertInfo.viewAlert(
-                        "ERROR",
-                        "Credenciales Incorrectas",
-                        "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
-                        "Error de autenticación"
-                    );
+        try (ResultSet rs = cs.executeQuery()) {
+            if (rs.next()) {
+                String hashGuardado = rs.getString("password");
+                String rol = rs.getString("rol");
+                String nombre = rs.getString("nombre_completo");
+
+                if (!PasswordUtil.verificar(password, hashGuardado)) {
+                    alertInfo.viewAlert("ERROR", "Credenciales Incorrectas",
+                        "El correo o la contraseña no son válidos, o la cuenta está inactiva.", "Error de autenticación");
                     txtPassword.clear();
                     return;
                 }
+
+                alertInfo.viewAlert("INFORMATION", "Inicio de Sesión Exitoso",
+                    "¡Bienvenido al sistema, " + nombre + "!", "Éxito");
+
+                if ("Administrador".equalsIgnoreCase(rol)) {
+                    navegarAdminView();
+                } else if ("Cajero".equalsIgnoreCase(rol)) {
+                    navegarCashierView();
+                } else {
+                    alertInfo.viewAlert("ERROR", "Rol no permitido",
+                        "Tu rol de usuario no tiene permisos para acceder al sistema.", "Acceso denegado");
+                }
+            } else {
+                alertInfo.viewAlert("ERROR", "Credenciales Incorrectas",
+                    "El correo o la contraseña no son válidos, o la cuenta está inactiva.", "Error de autenticación");
+                txtPassword.clear();
+                return;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertInfo.viewAlert(
-                "ERROR",
-                "Error de Base de Datos",
-                "No se pudo validar el usuario: " + e.getMessage(),
-                "Error del sistema"
-            );
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo validar el usuario: " + e.getMessage(), "Error del sistema");
     }
+}
 
     private void navegarAdminView() {
         try {
