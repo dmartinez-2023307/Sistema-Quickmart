@@ -82,24 +82,6 @@ public class AdminViewController implements Initializable {
         }
 
         try {
-<<<<<<< HEAD
-            // 1. Cargar el FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
-            Parent root = loader.load();
-
-            // 2. Obtener el controlador y pasarle el producto seleccionado
-            EditProductController controller = loader.getController();
-            controller.setProduct(product);
-
-            // 3. Configurar y mostrar la nueva ventana (Stage)
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL); // Ventana modal (bloquea la principal)
-            stage.setTitle("Editar Producto: " + product.getCommercialName());
-            stage.setScene(new Scene(root));
-            
-            stage.showAndWait(); 
-            
-=======
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
             Parent root = loader.load();
 
@@ -112,7 +94,6 @@ public class AdminViewController implements Initializable {
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
->>>>>>> f9636ba (feat: se agrego el boton editar funcional y cambios en la db)
         } catch (Exception e) {
             e.printStackTrace();
             alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
@@ -203,20 +184,24 @@ public class AdminViewController implements Initializable {
         }
     }
 
-    @FXML
-    private void managementUser() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("QuickMart - Gestión de Empleados");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+ @FXML
+private void managementUser() {
+    try {
+        // ✅ Cambiado a EmployeeManagementView.fxml
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
+        Parent root = loader.load();
+        
+        Stage stage = new Stage();
+        stage.setTitle("QuickMart - Gestión de Empleados");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
+        
+    } catch (IOException e) {
+        alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
+        e.printStackTrace();
     }
+}
 
     private void configurarTabla() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -251,11 +236,7 @@ public class AdminViewController implements Initializable {
                 producto.setCurrentStock(rs.getInt("stock_actual"));
 
                 Category cat = new Category();
-<<<<<<< HEAD
-                cat.setId(rs.getInt("id_categoria"));  // ✅ AGREGAR ESTA LÍNEA (de la rama ft/)
-=======
                 cat.setId(rs.getInt("id_categoria")); // ✅ ESTA ES LA LÍNEA CLAVE
->>>>>>> f9636ba (feat: se agrego el boton editar funcional y cambios en la db)
                 cat.setName(rs.getString("nombre_categoria"));
                 producto.setCategory(cat);
 
@@ -263,10 +244,6 @@ public class AdminViewController implements Initializable {
             }
             inventoryTable.setItems(listaProductos);
             System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
-<<<<<<< HEAD
-
-=======
->>>>>>> f9636ba (feat: se agrego el boton editar funcional y cambios en la db)
         } catch (Exception e) {
             alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
             e.printStackTrace();
