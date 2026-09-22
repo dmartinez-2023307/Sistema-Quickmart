@@ -10,6 +10,11 @@
 <project name="sistema-quickmart" default="default" basedir=".">
     <description>Builds, tests, and runs the project sistema-quickmart.</description>
     <import file="nbproject/build-impl.xml"/>
+    
+    <target name="-pre-run">
+        <property name="run.jvmargs" value="--module-path &quot;C:/libraries/openjfx-21.0.11_windows-x64_bin-sdk/javafx-sdk-21.0.11/lib&quot; --add-modules javafx.controls,javafx.fxml"/>
+    </target>
+    
     <!--
 
     There exist several targets which are by default empty and which can be 

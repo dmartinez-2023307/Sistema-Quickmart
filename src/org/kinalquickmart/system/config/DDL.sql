@@ -133,17 +133,24 @@ BEGIN
     ORDER BY nombre_completo;
 END $$
 
-CREATE PROCEDURE sp_validarLogin(
+DELIMITER //
+
+CREATE  PROCEDURE sp_validarLogin(
     IN p_correo VARCHAR(100),
     IN p_password VARCHAR(255)
 )
 BEGIN
-    SELECT id_usuario, correo, nombre_completo
+    SELECT 
+        id_usuario,
+        nombre_completo,
+        rol,
+        activo
     FROM Usuario
-    WHERE correo = p_correo
-      AND password = p_password
+    WHERE correo = p_correo 
+      AND password = p_password 
       AND activo = TRUE;
-END $$
+END //
+
 
 CREATE PROCEDURE sp_editarUsuario(
     IN p_id INT,
