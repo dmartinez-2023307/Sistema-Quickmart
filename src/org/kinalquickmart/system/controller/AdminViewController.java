@@ -207,7 +207,6 @@ private void deleteProduct() {
     @FXML
     private void managementUser() {
         try {
-            // ✅ Cambiado a EmployeeManagementView.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
             Parent root = loader.load();
             
@@ -256,7 +255,7 @@ private void deleteProduct() {
                 producto.setCurrentStock(rs.getInt("stock_actual"));
 
                 Category cat = new Category();
-                cat.setId(rs.getInt("id_categoria")); // ✅ ESTA ES LA LÍNEA CLAVE
+                cat.setId(rs.getInt("id_categoria"));
                 cat.setName(rs.getString("nombre_categoria"));
                 producto.setCategory(cat);
 
@@ -272,5 +271,26 @@ private void deleteProduct() {
 
     private Product getSelectedProduct() {
         return inventoryTable.getSelectionModel().getSelectedItem();
+    }
+    
+  
+    public void configurarPermisos(String rol) {
+        if (rol == null) return;
+
+        switch (rol) {       
+            case "Bodeguero":
+                
+                btnDelete.setVisible(false);
+                btnDelete.setManaged(false);
+                
+                
+                btnManagementUser.setVisible(false);
+                btnManagementUser.setManaged(false);
+                break;
+                
+            case "Administrador":
+            default:
+                break;
+        }
     }
 }
