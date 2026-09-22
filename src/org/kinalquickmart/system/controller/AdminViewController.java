@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -18,7 +19,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -100,32 +104,47 @@ public class AdminViewController implements Initializable {
         }
     }
 
-    @FXML
-    private void deleteProduct() {
-        Product product = getSelectedProduct();
-        if (product == null) {
-            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
-            return;
-        }
-
-        alertInfo.viewAlert("WARNING", "Confirmar Eliminación",
-                "¿Estás seguro de que deseas eliminar el producto: " + product.getCommercialName() + "?", "Eliminar Producto");
-
-        String sql = "{CALL sp_eliminarProducto(?)}";
-
-        try {
-            Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-            try (CallableStatement cs = conn.prepareCall(sql)) {
-                cs.setInt(1, product.getId());
-                cs.executeUpdate();
-                alertInfo.viewAlert("INFORMATION", "Éxito", "Producto eliminado correctamente.", "Eliminación");
-                readProduct();
-            }
-        } catch (Exception e) {
-            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo eliminar: " + e.getMessage(), "Error");
-            e.printStackTrace();
-        }
+  @FXML
+private void deleteProduct() {
+    Product product = getSelectedProduct();
+    if (product == null) {
+        alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+        return;
     }
+
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmar Eliminación");
+    alert.setHeaderText("¿Estás seguro de que deseas eliminar este producto?");
+    alert.setContentText("Producto: " + product.getCommercialName());
+
+    ButtonType botonEliminar = new ButtonType("Eliminar", ButtonBar.ButtonData.OK_DONE);
+    ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+    
+    alert.getButtonTypes().setAll(botonEliminar, botonCancelar);
+
+    Optional<ButtonType> resultado = alert.showAndWait();
+
+    if (resultado.isEmpty() || resultado.get() != botonEliminar) {
+        System.out.println("Eliminación cancelada por el usuario.");
+        return; 
+    }
+
+    String sql = "{CALL sp_eliminarProducto(?)}";
+
+    try {
+        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+        try (CallableStatement cs = conn.prepareCall(sql)) {
+            cs.setInt(1, product.getId());
+            cs.executeUpdate();
+            
+            alertInfo.viewAlert("INFORMATION", "Éxito", "Producto eliminado correctamente.", "Eliminación");
+            readProduct(); 
+        }
+    } catch (Exception e) {
+        alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo eliminar: " + e.getMessage(), "Error");
+        e.printStackTrace();
+    }
+}
 
     @FXML
     private void searchProduct(ActionEvent event) {
