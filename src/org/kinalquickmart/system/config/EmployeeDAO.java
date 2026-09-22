@@ -1,6 +1,7 @@
 package org.kinalquickmart.system.config;
 
 import org.kinalquickmart.system.model.Employee;
+import org.kinalquickmart.system.utils.PasswordUtil;
 import java.sql.*;
 
 public class EmployeeDAO {
@@ -13,7 +14,7 @@ public class EmployeeDAO {
             CallableStatement stmt = conn.prepareCall(sql);
             
             stmt.setString(1, employee.getEmail());
-            stmt.setString(2, employee.getPassword());
+            stmt.setString(2, PasswordUtil.hash(employee.getPassword()));
             stmt.setString(3, employee.getFullName());
             stmt.setString(4, employee.getRole());
             
