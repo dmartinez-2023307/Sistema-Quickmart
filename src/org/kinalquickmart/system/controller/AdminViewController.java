@@ -258,6 +258,7 @@ public class AdminViewController implements Initializable {
             System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
         } catch (Exception e) {
+
           alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import org.kinalquickmart.system.utils.AlertInformation;
 
 public class LoginController {
 
+    private static final String RUTA_VISTAS = "/org/kinalquickmart/system/view/";
     private final AlertInformation alertInfo = new AlertInformation();
 
     @FXML
@@ -52,7 +53,7 @@ public class LoginController {
 
     private void validarCredenciales(String correo, String password) {
         String sql = "{CALL sp_validarLogin(?, ?)}";
-        
+
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
         if (conn == null) {
             alertInfo.viewAlert(
@@ -69,6 +70,7 @@ public class LoginController {
             cs.setString(2, password);
 
             try (ResultSet rs = cs.executeQuery()) {
+                // El Stored Procedure 'sp_validarLogin' ya valida la contraseña y que esté activo.
                 if (rs.next()) {
                     String rol = rs.getString("rol");
                     String nombre = rs.getString("nombre_completo");
@@ -96,10 +98,11 @@ public class LoginController {
                     alertInfo.viewAlert(
                         "ERROR",
                         "Credenciales Incorrectas",
-                        "El correo o la contraseña no son válidos.",
+                        "El correo o la contraseña no son válidos, o la cuenta está inactiva.",
                         "Error de autenticación"
                     );
                     txtPassword.clear();
+                    return;
                 }
             }
         } catch (Exception e) {
@@ -115,7 +118,7 @@ public class LoginController {
 
     private void navegarAdminView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/AdminView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + "AdminView.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
@@ -137,7 +140,7 @@ public class LoginController {
 
     private void navegarCashierView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/CashierView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + "CashierView.fxml"));
             Parent root = loader.load();
             
             Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
