@@ -2,42 +2,49 @@ package org.kinalquickmart.system.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;  // ✅ ESTE ES EL QUE FALTA
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import javafx.beans.property.SimpleStringProperty;
 import org.kinalquickmart.system.config.EmployeeDAO;
 import org.kinalquickmart.system.model.Employee;
 import org.kinalquickmart.system.utils.AlertInformation;
 
 public class EmployeeManagementController implements Initializable {
 
-    @FXML private TextField txtSearch;
-    @FXML private Button btnSearch;
-    @FXML private TableView<Employee> tblEmployees;
-    @FXML private TableColumn<Employee, Integer> colId;
-    @FXML private TableColumn<Employee, String> colFullName;
-    @FXML private TableColumn<Employee, String> colEmail;
-    @FXML private TableColumn<Employee, String> colRole;
-  @FXML private TableColumn<Employee, String> colActive;
-    @FXML private Button btnEdit;
-    @FXML private Button btnFire;
-    @FXML private Button btnRegisterNew;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private Button btnDespedir;
+    @FXML
+    private Button btnRegisterNew;
+    @FXML
+    private TableView<Employee> tblEmployees;
+    @FXML
+    private TableColumn<Employee, Integer> colId;
+    @FXML
+    private TableColumn<Employee, String> colFullName;
+    @FXML
+    private TableColumn<Employee, String> colEmail;
+    @FXML
+    private TableColumn<Employee, String> colRole;
+    @FXML
+    private TableColumn<Employee, String> colActive;
 
     private final EmployeeDAO employeeDAO = new EmployeeDAO();
     private final AlertInformation alertInfo = new AlertInformation();
@@ -54,134 +61,116 @@ public class EmployeeManagementController implements Initializable {
         colFullName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
-        
+
         colActive.setCellValueFactory(cellData -> {
             boolean activo = cellData.getValue().isActive();
             String estado = activo ? "Activo" : "Inactivo";
             return new SimpleStringProperty(estado);
         });
-        
+
         tblEmployees.setItems(employeeList);
     }
 
-    private void cargarEmpleados() {
+    public void cargarEmpleados() {
         employeeList.setAll(employeeDAO.getAllEmployees());
     }
 
     @FXML
     private void handleSearch() {
         String texto = txtSearch.getText().trim();
-        
+
         if (texto.isEmpty()) {
             cargarEmpleados();
             return;
         }
 
-        List<Employee> resultados = employeeDAO.searchEmployees(texto);
-        employeeList.setAll(resultados);
+        employeeList.setAll(employeeDAO.searchEmployees(texto));
+    }
+
+    @FXML
+    private void handleRegisterNew() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/kinalquickmart/system/view/RegisterEmployeeView.fxml")
+            );
+
+            Parent root = loader.load();
+            RegisterEmployeeController registerController = loader.getController();
+
+            // Pasar el método para actualizar la tabla
+            registerController.setTableViewUpdater(this::cargarEmpleados);
+
+            Stage stage = new Stage();
+            stage.setTitle("QuickMart - Registrar Nuevo Empleado");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            alertInfo.viewAlert("ERROR", "Error al abrir ventana", "No se pudo abrir: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void handleEdit() {
         Employee selected = tblEmployees.getSelectionModel().getSelectedItem();
-        
+
         if (selected == null) {
-            alertInfo.viewAlert(
-                "WARNING",
-                "Selección requerida",
-                "Por favor, selecciona un empleado de la tabla.",
-                "Advertencia"
-            );
+            alertInfo.viewAlert("WARNING", "Sin selección", "Seleccione un empleado de la tabla para editar.", "Advertencia");
             return;
         }
 
-        // Aquí podrías abrir un formulario de edición
-        alertInfo.viewAlert(
-            "INFORMATION",
-            "Editar Empleado",
-            "ID: " + selected.getId() + "\n" +
-            "Nombre: " + selected.getFullName() + "\n" +
-            "Correo: " + selected.getEmail() + "\n" +
-            "Rol: " + selected.getRole() + "\n" +
-            "Estado: " + (selected.isActive() ? "Activo" : "Inactivo") + "\n\n" +
-            "(El formulario de edición se implementará aquí)",
-            "Editar Empleado"
-        );
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/kinalquickmart/system/view/RegisterEmployeeView.fxml")
+            );
+
+            Parent root = loader.load();
+            RegisterEmployeeController controller = loader.getController();
+
+            // Cargar los datos del empleado en los campos
+            controller.loadEmployeeData(selected);
+
+            // Cuando se guarde, actualizar la tabla
+            controller.setTableViewUpdater(this::cargarEmpleados);
+
+            Stage stage = new Stage();
+            stage.setTitle("QuickMart - Editar Empleado");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir la ventana de edición.", "Error");
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    private void handleFire() {
+    private void handleDespedir() {
         Employee selected = tblEmployees.getSelectionModel().getSelectedItem();
-        
+
         if (selected == null) {
-            alertInfo.viewAlert(
-                "WARNING",
-                "Selección requerida",
-                "Por favor, selecciona un empleado de la tabla.",
-                "Advertencia"
-            );
+            alertInfo.viewAlert("WARNING", "Sin selección", "Seleccione un empleado de la tabla para eliminar.", "Advertencia");
             return;
         }
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmar Despido");
-        alert.setHeaderText("Despedir Empleado");
-        alert.setContentText("¿Estás seguro de que deseas despedir a " + selected.getFullName() + "?\n\nEsta acción desactivará su cuenta y no podrá iniciar sesión.");
+        boolean confirmar = alertInfo.viewConfirm(
+                "CONFIRMAR",
+                "Eliminar empleado",
+                "¿Está seguro que desea ELIMINAR permanentemente a " + selected.getFullName() + "?",
+                "Confirmación"
+        );
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            if (employeeDAO.fireEmployee(selected.getId())) {
-                alertInfo.viewAlert(
-                    "INFORMATION",
-                    "Éxito",
-                    "El empleado ha sido despedido correctamente.",
-                    "Despido"
-                );
+        if (confirmar) {
+            // Eliminar permanentemente
+            if (employeeDAO.deleteEmployee(selected.getId())) {
+                alertInfo.viewAlert("INFORMATION", "Éxito", "Empleado eliminado correctamente.", "Eliminación");
                 cargarEmpleados();
             } else {
-                alertInfo.viewAlert(
-                    "ERROR",
-                    "Error",
-                    "No se pudo despedir al empleado.",
-                    "Error de base de datos"
-                );
+                alertInfo.viewAlert("ERROR", "Error", "No se pudo eliminar al empleado.", "Error");
             }
         }
     }
-
-@FXML
-private void handleRegisterNew() {
-    try {
-        // Verifica la ruta exacta del archivo
-        FXMLLoader loader = new FXMLLoader(
-            getClass().getResource("/org/kinalquickmart/system/view/RegisterEmployeeView.fxml")
-        );
-        
-        if (loader.getLocation() == null) {
-            alertInfo.viewAlert(
-                "ERROR",
-                "Archivo no encontrado",
-                "No se encuentra RegisterEmployeeView.fxml\n\nRuta buscada: /org/kinalquickmart/system/view/RegisterEmployeeView.fxml",
-                "Error"
-            );
-            return;
-        }
-        
-        Parent root = loader.load();
-        
-        Stage stage = new Stage();
-        stage.setTitle("QuickMart - Registrar Nuevo Empleado");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
-        
-    } catch (IOException e) {
-        alertInfo.viewAlert(
-            "ERROR",
-            "Error al abrir ventana",
-            "No se pudo abrir: " + e.getMessage(),
-            "Error de navegación"
-        );
-        e.printStackTrace();
-    }
-}
 }
