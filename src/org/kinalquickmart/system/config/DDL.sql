@@ -185,6 +185,9 @@ BEGIN
     SELECT LAST_INSERT_ID() AS id_producto;
 END $$
 
+DELIMITER $$
+
+
 CREATE PROCEDURE sp_listarProductos()
 BEGIN
     SELECT
@@ -194,12 +197,14 @@ BEGIN
         p.precio_costo,
         p.precio_venta,
         p.stock_actual,
+        c.id_categoria AS id_categoria,
         IFNULL(c.nombre_categoria, 'Sin categoría') AS nombre_categoria,
         (p.precio_venta - p.precio_costo) AS margen_ganancia
     FROM Producto p
     LEFT JOIN Categoria c ON p.id_categoria = c.id_categoria
     ORDER BY p.nombre_comercial;
 END $$
+
 
 CREATE PROCEDURE sp_buscarProducto(IN p_text VARCHAR(50))
 BEGIN
@@ -222,6 +227,7 @@ CREATE PROCEDURE sp_actualizarProducto(
     IN p_nombre VARCHAR(100),
     IN p_precio_costo DECIMAL(10,2),
     IN p_precio_venta DECIMAL(10,2),
+    IN p_stock INT,
     IN p_id_categoria INT
 )
 BEGIN
@@ -229,19 +235,11 @@ BEGIN
     SET nombre_comercial = p_nombre,
         precio_costo = p_precio_costo,
         precio_venta = p_precio_venta,
+        stock_actual = p_stock,
         id_categoria = p_id_categoria
     WHERE id_producto = p_id;
 END $$
 
-CREATE PROCEDURE sp_ajustarStock(
-    IN p_id INT,
-    IN p_cantidad INT
-)
-BEGIN
-    UPDATE Producto
-    SET stock_actual = stock_actual + p_cantidad
-    WHERE id_producto = p_id;
-END $$
 
 CREATE PROCEDURE sp_eliminarProducto(IN p_id INT)
 BEGIN

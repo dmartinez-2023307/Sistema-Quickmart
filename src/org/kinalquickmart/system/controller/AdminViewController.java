@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import org.kinalquickmart.system.config.ConexionDB;
@@ -82,20 +83,31 @@ public class AdminViewController implements Initializable {
     private void editProduct() {
         Product product = getSelectedProduct();
         if (product == null) {
-            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+            alertInfo.viewAlert("WARNING", "Advertencia", "Por favor, selecciona un producto de la tabla.", "Sin selección");
             return;
         }
 
-        String catName = (product.getCategory() != null) ? product.getCategory().getName() : "Sin categoría";
-        
-        alertInfo.viewAlert("INFORMATION", "Editar Producto",
-            "ID: " + product.getId() + "\n" +
-            "Nombre: " + product.getCommercialName() + "\n" +
-            "Categoría: " + catName + "\n" +
-            "Stock: " + product.getCurrentStock() + "\n" +
-            "Precio Venta: Q" + product.getSalePrice() + "\n\n" +
-            "(El formulario de edición se implementará aquí)",
-            "Editar");
+        try {
+            // 1. Cargar el FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
+            Parent root = loader.load();
+
+            // 2. Obtener el controlador y pasarle el producto seleccionado
+            EditProductController controller = loader.getController();
+            controller.setProduct(product);
+
+            // 3. Configurar y mostrar la nueva ventana (Stage)
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL); // Ventana modal (bloquea la principal)
+            stage.setTitle("Editar Producto: " + product.getCommercialName());
+            stage.setScene(new Scene(root));
+            
+            stage.showAndWait(); 
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
+        }
     }
 
     @FXML
@@ -254,6 +266,7 @@ public class AdminViewController implements Initializable {
                 producto.setCurrentStock(rs.getInt("stock_actual"));
                 
                 Category cat = new Category();
+                cat.setId(rs.getInt("id_categoria"));  // ✅ AGREGAR ESTA LÍNEA (de la rama ft/)
                 cat.setName(rs.getString("nombre_categoria"));
                 producto.setCategory(cat);
                 
@@ -261,6 +274,7 @@ public class AdminViewController implements Initializable {
             }
             
             inventoryTable.setItems(listaProductos);
+            System.out.println(" Total de productos cargados en tabla: " + listaProductos.size());
 
         } catch (Exception e) {
             alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudieron cargar los productos: " + e.getMessage(), "Error");
