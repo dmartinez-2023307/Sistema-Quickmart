@@ -184,24 +184,25 @@ public class AdminViewController implements Initializable {
         }
     }
 
- @FXML
-private void managementUser() {
-    try {
-        // ✅ Cambiado a EmployeeManagementView.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
-        Parent root = loader.load();
-        
-        Stage stage = new Stage();
-        stage.setTitle("QuickMart - Gestión de Empleados");
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.show();
-        
-    } catch (IOException e) {
-        alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
-        e.printStackTrace();
+
+    @FXML
+    private void managementUser() {
+        try {
+            // ✅ Cambiado a EmployeeManagementView.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
+            Parent root = loader.load();
+            
+            Stage stage = new Stage();
+            stage.setTitle("QuickMart - Gestión de Empleados");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+            
+        } catch (IOException e) {
+            alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
     }
-}
 
     private void configurarTabla() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));

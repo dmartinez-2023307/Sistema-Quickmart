@@ -132,18 +132,12 @@ BEGIN
 END $$
 
 CREATE PROCEDURE sp_validarLogin(
-    IN p_correo VARCHAR(100),
-    IN p_password VARCHAR(255)
+    IN p_correo VARCHAR(100)
 )
 BEGIN
-    SELECT 
-        id_usuario,
-        nombre_completo,
-        rol,
-        activo
+    SELECT id_usuario, correo, password, nombre_completo, rol
     FROM Usuario
-    WHERE correo = p_correo 
-      AND password = p_password 
+    WHERE correo = p_correo
       AND activo = TRUE;
 END $$
 
