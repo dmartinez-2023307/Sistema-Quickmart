@@ -179,9 +179,6 @@ BEGIN
     SELECT LAST_INSERT_ID() AS id_producto;
 END $$
 
-DELIMITER $$
-
-
 CREATE PROCEDURE sp_listarProductos()
 BEGIN
     SELECT
@@ -198,7 +195,6 @@ BEGIN
     LEFT JOIN Categoria c ON p.id_categoria = c.id_categoria
     ORDER BY p.nombre_comercial;
 END $$
-
 
 CREATE PROCEDURE sp_buscarProducto(IN p_text VARCHAR(50))
 BEGIN
@@ -234,10 +230,22 @@ BEGIN
     WHERE id_producto = p_id;
 END $$
 
-
 CREATE PROCEDURE sp_eliminarProducto(IN p_id INT)
 BEGIN
     DELETE FROM Producto WHERE id_producto = p_id;
+END $$
+
+--  NUEVO: Devolver stock al inventario (cuando se elimina producto del ticket)
+CREATE PROCEDURE sp_devolverStock(
+    IN p_id_producto INT,
+    IN p_cantidad INT
+)
+BEGIN
+    UPDATE Producto 
+    SET stock_actual = stock_actual + p_cantidad 
+    WHERE id_producto = p_id_producto;
+    
+    SELECT stock_actual FROM Producto WHERE id_producto = p_id_producto;
 END $$
 
 DELIMITER ;
