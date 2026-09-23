@@ -13,10 +13,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="746.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
             
    <left>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="521.0" prefWidth="247.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#handleCreateProduct" prefHeight="31.0" prefWidth="141.0" styleClass="admin-create" text="CREAR">
                <font><Font size="15.0" /></font>
@@ -38,10 +38,10 @@
             </Button>
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
-            <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
+                  <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="165.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
             <Pane prefHeight="16.0" prefWidth="154.0" />
 
-            <Button fx:id="btnReporteInventario" mnemonicParsing="false" onAction="#abrirReporteInventario" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="REPORTE DE INVENTARIO" />
+                  <Button fx:id="btnReporteInventario" mnemonicParsing="false" onAction="#abrirReporteInventario" prefHeight="46.0" prefWidth="184.0" styleClass="admin-users" text="REPORTE DE INVENTARIO" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>
@@ -50,13 +50,13 @@
    <top>
       <Pane prefHeight="46.0" prefWidth="600.0" styleClass="admin-header" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="7.0" layoutY="15.0" text="QUICKMART" />
-            <ImageView fitHeight="52.0" fitWidth="96.0" layoutX="496.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="20.0" layoutY="-1.0" prefHeight="48.0" prefWidth="102.0" text="QUICKMART" />
+            <ImageView fitHeight="52.0" fitWidth="96.0" layoutX="613.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
             </ImageView>
-            <Label layoutX="238.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTARIO">
+            <Label layoutX="311.0" layoutY="8.0" prefHeight="30.0" prefWidth="124.0" text="INVENTARIO">
                <font><Font size="20.0" /></font>
             </Label>
          </children>
@@ -64,7 +64,7 @@
    </top>
    
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="admin-content" BorderPane.alignment="CENTER">
+      <VBox prefHeight="524.0" prefWidth="549.0" styleClass="admin-content" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="32.0" prefWidth="446.0" styleClass="admin-search">
                <children>
@@ -73,13 +73,13 @@
                </children>
             </HBox>
             
-            <TableView fx:id="inventoryTable" prefHeight="322.0" prefWidth="403.0" styleClass="admin-table">
+            <TableView fx:id="inventoryTable" prefHeight="409.0" prefWidth="459.0" styleClass="admin-table">
               <columns>
                 <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
                 <TableColumn fx:id="colNombre" prefWidth="150.0" text="Nombre" />
                 <TableColumn fx:id="colCategoria" prefWidth="100.0" text="Categoría" />
                 <TableColumn fx:id="colStock" prefWidth="50.0" text="Stock" />
-                <TableColumn fx:id="colPrecio" prefWidth="75.0" text="Precio" />
+                <TableColumn fx:id="colPrecio" prefWidth="106.0" text="Precio" />
               </columns>
             </TableView>
          </children>

@@ -13,16 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="665.0" styleClass="cashier-view" stylesheets="@../resources/style/CashierStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.CashierController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="748.0" styleClass="cashier-view" stylesheets="@../resources/style/CashierStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.CashierController">
         <top>
             <Pane prefHeight="65.0" prefWidth="550.0" styleClass="cashier-header" BorderPane.alignment="CENTER">
                 <children>
-                    <ImageView fitHeight="65.0" fitWidth="120.0" layoutX="7.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="75.0" fitWidth="132.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                         </image>
                     </ImageView>
-                    <Label layoutX="548.0" layoutY="19.0" prefHeight="27.0" prefWidth="85.0" text="CAJERO">
+                    <Label layoutX="628.0" layoutY="11.0" prefHeight="44.0" prefWidth="106.0" text="CAJERO">
                         <font>
                             <Font size="20.0" />
                         </font>
@@ -35,27 +35,27 @@
                 <children>
                     <HBox prefHeight="36.0" prefWidth="432.0" styleClass="cashier-search">
                         <children>
-                            <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleSearch" styleClass="cashier-search-button" text="BUSCAR" />
-                            <TextField fx:id="txtSearch" prefHeight="35.0" prefWidth="382.0" />
+                            <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#handleSearch" prefHeight="33.0" prefWidth="111.0" styleClass="cashier-search-button" text="BUSCAR" />
+                            <TextField fx:id="txtSearch" prefHeight="35.0" prefWidth="537.0" />
                         </children>
                     </HBox>
                     <HBox prefHeight="284.0" prefWidth="505.0">
                         <children>
-                            <TableView fx:id="tblCatalog" onMouseClicked="#handleAddToTicket" prefHeight="181.0" prefWidth="298.0" styleClass="cashier-products-table">
+                            <TableView fx:id="tblCatalog" onMouseClicked="#handleAddToTicket" prefHeight="292.0" prefWidth="329.0" styleClass="cashier-products-table">
                                 <columns>
-                                    <TableColumn fx:id="colCatalogCode" prefWidth="75.0" text="Código" />
-                                    <TableColumn fx:id="colCatalogName" prefWidth="75.0" text="Producto" />
-                                    <TableColumn fx:id="colCatalogPrice" prefWidth="75.0" text="Precio" />
-                                    <TableColumn fx:id="colCatalogStock" prefWidth="75.0" text="Stock" />
+                                    <TableColumn fx:id="colCatalogCode" prefWidth="87.0" text="Código" />
+                                    <TableColumn fx:id="colCatalogName" prefWidth="77.0" text="Producto" />
+                                    <TableColumn fx:id="colCatalogPrice" prefWidth="78.0" text="Precio" />
+                                    <TableColumn fx:id="colCatalogStock" prefWidth="84.0" text="Stock" />
                                 </columns>
                             </TableView>
                             <Pane prefHeight="269.0" prefWidth="16.0" />
-                            <TableView fx:id="tblTicket" prefHeight="181.0" prefWidth="306.0" styleClass="cashier-cart-table">
+                            <TableView fx:id="tblTicket" prefHeight="314.0" prefWidth="337.0" styleClass="cashier-cart-table">
                                 <columns>
-                                    <TableColumn fx:id="colTicketName" prefWidth="75.0" text="Producto" />
-                                    <TableColumn fx:id="colTicketPrice" prefWidth="75.0" text="P. Unitario" />
-                                    <TableColumn fx:id="colTicketQty" prefWidth="74.0" text="Cant." />
-                                    <TableColumn fx:id="colTicketSubtotal" prefWidth="76.0" text="Subtotal" />
+                                    <TableColumn fx:id="colTicketName" prefWidth="98.0" text="Producto" />
+                                    <TableColumn fx:id="colTicketPrice" prefWidth="84.0" text="P. Unitario" />
+                                    <TableColumn fx:id="colTicketQty" prefWidth="70.0" text="Cantidad" />
+                                    <TableColumn fx:id="colTicketSubtotal" minWidth="6.0" prefWidth="82.0" text="Subtotal" />
                                 </columns>
                             </TableView>
                         </children>
@@ -74,7 +74,7 @@
                                 <children>
                                     <HBox prefHeight="30.0" prefWidth="237.0">
                                         <children>
-                                            <Label prefHeight="22.0" prefWidth="68.0" text="TOTAL :" textOverrun="CLIP" />
+                                            <Label prefHeight="30.0" prefWidth="69.0" text="TOTAL :" textOverrun="CLIP" />
                               <Pane prefHeight="22.0" prefWidth="28.0">
                                  <children>
                                                   <Label fx:id="lblTotal" layoutX="5.0" text="Q0.00" />
@@ -82,7 +82,7 @@
                               </Pane>
                                         </children>
                                     </HBox>
-                                    <Button fx:id="btnFinalize" mnemonicParsing="false" onAction="#handleFinalize" styleClass="cashier-finish" text="FINALIZAR COMPRA" />
+                                    <Button fx:id="btnFinalize" mnemonicParsing="false" onAction="#handleFinalize" prefHeight="60.0" prefWidth="215.0" styleClass="cashier-finish" text="FINALIZAR COMPRA" />
                                 </children>
                             </VBox>
                         </children>
