@@ -235,6 +235,13 @@ BEGIN
     DELETE FROM Producto WHERE id_producto = p_id;
 END $$
 
+-- US-2.3: Reporte de Valor de Inventario.
+CREATE PROCEDURE sp_valorInventario()
+BEGIN
+    SELECT SUM(precio_costo * stock_actual) AS valor_total
+    FROM Producto;
+END $$
+
 --  NUEVO: Devolver stock al inventario (cuando se elimina producto del ticket)
 CREATE PROCEDURE sp_devolverStock(
     IN p_id_producto INT,
