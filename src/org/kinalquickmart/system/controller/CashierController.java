@@ -41,6 +41,7 @@ public class CashierController implements Initializable {
 
     @FXML private TextField txtSearch;
     @FXML private Button btnSearch;
+    @FXML private Button btnLogOut;
     @FXML private TableView<Product> tblCatalog;
     @FXML private TableColumn<Product, String> colCatalogCode;
     @FXML private TableColumn<Product, String> colCatalogName;
@@ -270,6 +271,21 @@ public class CashierController implements Initializable {
             .map(TicketItem::getSubtotal)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         lblTotal.setText("Q" + String.format("%.2f", total));
+    }
+    
+    @FXML
+    private void logOutUser() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/LoginView.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) btnLogOut.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("QuickMart - Login");
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
