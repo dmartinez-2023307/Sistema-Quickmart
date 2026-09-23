@@ -66,16 +66,20 @@ public class LoginController {
 
             try (ResultSet rs = cs.executeQuery()) {
                 if (!rs.next()) {
-                    alertInfo.viewAlert("ERROR", "Usuario no encontrado", "El correo no está registrado o la cuenta está inactiva.", "Error de autenticación");
+                    credencialesInvalidas();
                     return;
                 }
 
-                // 1️⃣ OBTENER EL ID DEL USUARIO 
-                // (Asegúrate de que tu procedimiento almacenado sp_validarLogin devuelva la columna "id_usuario")
-                int idUsuario = rs.getInt("id_usuario"); 
+                String hashGuardado = rs.getString("password");
+                if (!PasswordUtil.verificar(password, hashGuardado)) {
+                    credencialesInvalidas();
+                    return;
+                }
+
+                int idUsuario = rs.getInt("id_usuario");
                 String nombreUsuario = rs.getString("nombre_completo");
                 String rolUsuario = rs.getString("rol");
-                
+
                 System.out.println("✅ Login exitoso para: " + nombreUsuario + " | Rol: " + rolUsuario);
 
                 String vistaDestino = "Cajero".equals(rolUsuario) ? "CashierView.fxml" : "AdminView.fxml";
@@ -84,13 +88,10 @@ public class LoginController {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + vistaDestino));
                     Parent root = loader.load();
 
-                    // 2️⃣ PASAR LOS DATOS AL CONTROLADOR CORRESPONDIENTE
                     if ("Cajero".equals(rolUsuario)) {
-                        // Si es cajero, le pasamos el ID y el nombre para la factura
                         CashierController cajeroController = loader.getController();
                         cajeroController.setCajeroData(idUsuario, nombreUsuario);
                     } else {
-                        // Si es admin, configuramos los permisos como ya lo tenías
                         AdminViewController adminController = loader.getController();
                         adminController.configurarPermisos(rolUsuario);
                     }
@@ -99,7 +100,7 @@ public class LoginController {
                     stage.setScene(new Scene(root));
                     stage.setTitle("QuickMart - " + rolUsuario);
                     stage.show();
-                    
+
                 } catch (IOException e) {
                     alertInfo.viewAlert("ERROR", "Error", "No se pudo cargar la vista: " + vistaDestino, "Error");
                     e.printStackTrace();
@@ -110,6 +111,12 @@ public class LoginController {
             e.printStackTrace();
             alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo conectar: " + e.getMessage(), "Error");
         }
+    }
+
+    private void credencialesInvalidas() {
+        alertInfo.viewAlert("ERROR", "Acceso denegado", "Correo o contraseña incorrectos.", "Error de autenticación");
+        txtPassword.clear();
+        txtPassword.requestFocus();
     }
 
     private void navegarAdminView() {

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import org.kinalquickmart.system.config.EmployeeDAO;
 import org.kinalquickmart.system.model.Employee;
 import org.kinalquickmart.system.utils.AlertInformation;
+import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class RegisterEmployeeController implements Initializable {
 
@@ -44,17 +45,15 @@ public class RegisterEmployeeController implements Initializable {
         cmbRole.getItems().setAll(roles);
     }
 
-    // Método para recibir el callback desde el controlador principal
     public void setTableViewUpdater(Runnable updater) {
         this.tableViewUpdater = updater;
     }
 
-    // Método para cargar datos en modo edición
     public void loadEmployeeData(Employee employee) {
         this.employeeToEdit = employee;
         txtFullName.setText(employee.getFullName());
         txtEmail.setText(employee.getEmail());
-        pwdPassword.setText(employee.getPassword());
+        pwdPassword.clear(); // nunca se muestra el hash; se escribe una contraseña nueva
         cmbRole.setValue(employee.getRole());
         btnRegisterUser.setText("ACTUALIZAR");
     }
@@ -78,7 +77,9 @@ public class RegisterEmployeeController implements Initializable {
         }
 
         // Verificar si el correo ya existe ANTES de intentar guardar
-        if (employeeDAO.emailExists(email)) {
+        boolean correoCambio = employeeToEdit == null
+                || !email.equalsIgnoreCase(employeeToEdit.getEmail());
+        if (correoCambio && employeeDAO.emailExists(email)) {
             alertInfo.viewAlert("WARNING", "Correo duplicado",
                     "El correo '" + email + "' ya está registrado en el sistema.\nPor favor, use un correo diferente.",
                     "Correo existente");
@@ -91,7 +92,7 @@ public class RegisterEmployeeController implements Initializable {
             // MODO EDICIÓN
             employeeToEdit.setFullName(txtFullName.getText().trim());
             employeeToEdit.setEmail(email);
-            employeeToEdit.setPassword(pwdPassword.getText().trim());
+            employeeToEdit.setPassword(PasswordUtil.hash(pwdPassword.getText().trim()));
             employeeToEdit.setRole(cmbRole.getValue());
 
             if (employeeDAO.updateEmployee(employeeToEdit)) {
@@ -112,7 +113,7 @@ public class RegisterEmployeeController implements Initializable {
             Employee newEmployee = new Employee();
             newEmployee.setFullName(txtFullName.getText().trim());
             newEmployee.setEmail(email);
-            newEmployee.setPassword(pwdPassword.getText().trim());
+            newEmployee.setPassword(PasswordUtil.hash(pwdPassword.getText().trim()));
             newEmployee.setRole(cmbRole.getValue());
             newEmployee.setActive(true);
 
