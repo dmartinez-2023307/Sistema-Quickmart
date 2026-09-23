@@ -39,30 +39,45 @@ import org.kinalquickmart.system.utils.PDFGenerator;
 
 public class CashierController implements Initializable {
 
-    @FXML private TextField txtSearch;
-    @FXML private Button btnSearch;
-    @FXML private Button btnLogOut;
-    @FXML private TableView<Product> tblCatalog;
-    @FXML private TableColumn<Product, String> colCatalogCode;
-    @FXML private TableColumn<Product, String> colCatalogName;
-    @FXML private TableColumn<Product, BigDecimal> colCatalogPrice;
-    @FXML private TableColumn<Product, Integer> colCatalogStock;
-    @FXML private TableView<TicketItem> tblTicket;
-    @FXML private TableColumn<TicketItem, String> colTicketName;
-    @FXML private TableColumn<TicketItem, BigDecimal> colTicketPrice;
-    @FXML private TableColumn<TicketItem, Integer> colTicketQty;
-    @FXML private TableColumn<TicketItem, BigDecimal> colTicketSubtotal;
-    @FXML private Label lblTotal;
-    @FXML private Button btnFinalize;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private Button btnLogOut;
+    @FXML
+    private TableView<Product> tblCatalog;
+    @FXML
+    private TableColumn<Product, String> colCatalogCode;
+    @FXML
+    private TableColumn<Product, String> colCatalogName;
+    @FXML
+    private TableColumn<Product, BigDecimal> colCatalogPrice;
+    @FXML
+    private TableColumn<Product, Integer> colCatalogStock;
+    @FXML
+    private TableView<TicketItem> tblTicket;
+    @FXML
+    private TableColumn<TicketItem, String> colTicketName;
+    @FXML
+    private TableColumn<TicketItem, BigDecimal> colTicketPrice;
+    @FXML
+    private TableColumn<TicketItem, Integer> colTicketQty;
+    @FXML
+    private TableColumn<TicketItem, BigDecimal> colTicketSubtotal;
+    @FXML
+    private Label lblTotal;
+    @FXML
+    private Button btnFinalize;
 
     private final AlertInformation alertInfo = new AlertInformation();
     private final ObservableList<TicketItem> ticketItems = FXCollections.observableArrayList();
     private final ObservableList<Product> catalogProducts = FXCollections.observableArrayList();
     private BigDecimal total = BigDecimal.ZERO;
-    
+
     // Datos del cajero para la factura
-    private Integer currentUserId = 1; 
-    private String nombreCajero = "Cajero"; 
+    private Integer currentUserId = 1;
+    private String nombreCajero = "Cajero";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,13 +85,13 @@ public class CashierController implements Initializable {
         configurarColumnasTicket();
         tblTicket.setItems(ticketItems);
         tblCatalog.setItems(catalogProducts);
-        
+
         cargarProductosCatalogo();
         tblCatalog.setOnMouseClicked(this::handleTableClick);
-        
+
         // Evento de doble clic en tblTicket para eliminar producto
         tblTicket.setOnMouseClicked(this::handleEliminarDelTicket);
-        
+
         txtSearch.requestFocus();
     }
 
@@ -98,52 +113,60 @@ public class CashierController implements Initializable {
         colTicketQty.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colTicketSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
     }
-    
+
     private void cargarProductosCatalogo() {
-        String sql = "{CALL sp_listarProductos()}";
+        String sql = "{CALL sp_listarProductos()}"; // Ajusta al nombre de tu stored procedure
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        
+
         if (conn == null) {
-            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
             return;
         }
 
-        try (CallableStatement cs = conn.prepareCall(sql);
-             ResultSet rs = cs.executeQuery()) {
-
-            catalogProducts.clear();
-            while (rs.next()) {
-                Product producto = new Product();
-                producto.setId(rs.getInt("id_producto"));
-                producto.setBarCode(rs.getString("codigo_barras"));
-                producto.setCommercialName(rs.getString("nombre_comercial"));
-                producto.setSalePrice(rs.getBigDecimal("precio_venta"));
-                producto.setCurrentStock(rs.getInt("stock_actual"));
-                catalogProducts.add(producto);
+        try (CallableStatement cs = conn.prepareCall(sql)) {
+            try (ResultSet rs = cs.executeQuery()) {
+                catalogProducts.clear();
+                while (rs.next()) {
+                    Product producto = new Product();
+                    producto.setId(rs.getInt("id_producto"));
+                    producto.setBarCode(rs.getString("codigo_barras"));
+                    producto.setCommercialName(rs.getString("nombre_comercial"));
+                    producto.setSalePrice(rs.getBigDecimal("precio_venta"));
+                    producto.setCurrentStock(rs.getInt("stock_actual"));
+                    catalogProducts.add(producto);
+                }
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error al cargar productos: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error al cargar productos: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleSearch() {
         String texto = txtSearch.getText().trim();
+
         if (texto.isEmpty()) {
-            alertInfo.viewAlert("WARNING", "Campo vacío", "Por favor, ingresa un código o nombre de producto.", "Validación");
+            cargarProductosCatalogo();
+        } else { 
+            buscarProductos(texto);
             return;
         }
-        buscarProductos(texto);
         txtSearch.clear();
         txtSearch.requestFocus();
     }
 
     private void buscarProductos(String texto) {
+
+        if (texto == null || texto.trim().isEmpty()) {
+            cargarProductosCatalogo();
+            return;
+        }
+
         String sql = "{CALL sp_buscarProducto(?)}";
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        
-        if (conn == null) return;
+
+        if (conn == null) {
+            return;
+        }
 
         try (CallableStatement cs = conn.prepareCall(sql)) {
             cs.setString(1, texto);
@@ -159,7 +182,8 @@ public class CashierController implements Initializable {
                     catalogProducts.add(producto);
                 }
                 if (catalogProducts.isEmpty()) {
-                    alertInfo.viewAlert("WARNING", "Producto no encontrado", "No se encontraron productos que coincidan con: " + texto, "Búsqueda");
+                    alertInfo.viewAlert("WARNING", "Producto no encontrado",
+                            "No se encontraron productos que coincidan con: " + texto, "Búsqueda");
                 }
             }
         } catch (SQLException e) {
@@ -182,25 +206,25 @@ public class CashierController implements Initializable {
     private void handleEliminarDelTicket(MouseEvent event) {
         if (event.getClickCount() == 2) {
             TicketItem selectedItem = tblTicket.getSelectionModel().getSelectedItem();
-            
+
             if (selectedItem != null) {
                 Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
                 confirmAlert.setTitle("Eliminar producto");
                 confirmAlert.setHeaderText("¿Estás seguro de eliminar este producto del ticket?");
-                confirmAlert.setContentText("Producto: " + selectedItem.getProductName() + 
-                                           "\nCantidad: " + selectedItem.getQuantity() +
-                                           "\n\nEl stock será devuelto al inventario.");
+                confirmAlert.setContentText("Producto: " + selectedItem.getProductName()
+                        + "\nCantidad: " + selectedItem.getQuantity()
+                        + "\n\nEl stock será devuelto al inventario.");
 
                 java.util.Optional<ButtonType> result = confirmAlert.showAndWait();
-                
+
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     devolverStock(selectedItem.getProduct().getId(), selectedItem.getQuantity());
                     ticketItems.remove(selectedItem);
                     actualizarTotal();
                     cargarProductosCatalogo();
-                    
-                    alertInfo.viewAlert("INFORMATION", "Producto eliminado", 
-                        "El producto fue eliminado del ticket y el stock fue devuelto al inventario.", "Éxito");
+
+                    alertInfo.viewAlert("INFORMATION", "Producto eliminado",
+                            "El producto fue eliminado del ticket y el stock fue devuelto al inventario.", "Éxito");
                 }
             }
         }
@@ -210,7 +234,7 @@ public class CashierController implements Initializable {
     private void devolverStock(Integer idProducto, Integer cantidad) {
         String sql = "{CALL sp_devolverStock(?, ?)}";
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        
+
         if (conn == null) {
             alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
             return;
@@ -231,7 +255,7 @@ public class CashierController implements Initializable {
     @FXML
     private void handleAddToTicket() {
         Product selectedProduct = tblCatalog.getSelectionModel().getSelectedItem();
-        
+
         if (selectedProduct == null) {
             alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto del catálogo.", "Validación");
             return;
@@ -247,9 +271,9 @@ public class CashierController implements Initializable {
         }
 
         TicketItem existingItem = ticketItems.stream()
-            .filter(item -> item.getProduct().getId() == selectedProduct.getId())
-            .findFirst()
-            .orElse(null);
+                .filter(item -> item.getProduct().getId() == selectedProduct.getId())
+                .findFirst()
+                .orElse(null);
 
         if (existingItem != null) {
             if (existingItem.getQuantity() >= selectedProduct.getCurrentStock()) {
@@ -268,11 +292,11 @@ public class CashierController implements Initializable {
 
     private void actualizarTotal() {
         total = ticketItems.stream()
-            .map(TicketItem::getSubtotal)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .map(TicketItem::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         lblTotal.setText("Q" + String.format("%.2f", total));
     }
-    
+
     @FXML
     private void logOutUser() {
         try {
@@ -299,29 +323,29 @@ public class CashierController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/PagoDialogView.fxml"));
             Parent root = loader.load();
             PagoDialogController controller = loader.getController();
-            
+
             controller.setTotalVenta(total.doubleValue());
-            
+
             Stage dialog = new Stage();
             controller.setDialog(dialog);
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.setTitle("Finalizar Venta - QuickMart");
             dialog.setScene(new Scene(root));
             dialog.setResizable(false);
-            
+
             dialog.showAndWait();
-            
+
             if (controller.isConfirmado()) {
                 String nit = controller.getNit();
                 String formaPago = controller.getFormaPago();
                 double montoRecibido = controller.getMontoRecibido();
                 double cambio = controller.getCambio();
-                
+
                 Integer idVenta = procesarVentaEnBD();
-                
+
                 if (idVenta != null) {
                     generarFacturaPDF(idVenta, nit, formaPago, montoRecibido, cambio);
-                    
+
                     ticketItems.clear();
                     total = BigDecimal.ZERO;
                     lblTotal.setText("Q0.00");
@@ -331,7 +355,7 @@ public class CashierController implements Initializable {
                     alertInfo.viewAlert("ERROR", "Error de Venta", "No se pudo completar la venta. Revisa la consola.", "Error");
                 }
             }
-            
+
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error", "No se pudo cargar el diálogo de pago.", "Error");
             e.printStackTrace();
@@ -356,15 +380,15 @@ public class CashierController implements Initializable {
 
         double iva = subtotal * 0.15;
         double totalVenta = subtotal + iva;
-        
+
         String numeroFactura = String.format("%09d", idVenta);
         String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date());
         String cajero = (this.nombreCajero != null) ? this.nombreCajero : "Cajero ID: " + currentUserId;
 
         String rutaPDF = PDFGenerator.generarFacturaConPago(
-            numeroFactura, fecha, cajero, nit,
-            productos, subtotal, iva, totalVenta,
-            formaPago, montoRecibido, cambio
+                numeroFactura, fecha, cajero, nit,
+                productos, subtotal, iva, totalVenta,
+                formaPago, montoRecibido, cambio
         );
 
         if (rutaPDF != null) {
@@ -385,19 +409,21 @@ public class CashierController implements Initializable {
                 System.err.println("❌ Error al abrir el PDF: " + e.getMessage());
                 e.printStackTrace();
             }
-            
-            alertInfo.viewAlert("INFORMATION", "Venta y Factura generada", 
-                "Venta #" + idVenta + " completada exitosamente.\nLa factura se ha abierto automáticamente.", "Éxito");
+
+            alertInfo.viewAlert("INFORMATION", "Venta y Factura generada",
+                    "Venta #" + idVenta + " completada exitosamente.\nLa factura se ha abierto automáticamente.", "Éxito");
         } else {
-            alertInfo.viewAlert("WARNING", "Venta completada, error en PDF", 
-                "La venta se registró en la BD, pero hubo un error al generar el PDF.", "Advertencia");
+            alertInfo.viewAlert("WARNING", "Venta completada, error en PDF",
+                    "La venta se registró en la BD, pero hubo un error al generar el PDF.", "Advertencia");
         }
     }
 
     // ===== LÓGICA DE BASE DE DATOS =====
     private Integer procesarVentaEnBD() {
         Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        if (conn == null) return null;
+        if (conn == null) {
+            return null;
+        }
 
         try {
             conn.setAutoCommit(false);
