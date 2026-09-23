@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="600.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
             
    <left>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="154.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">
@@ -39,6 +39,9 @@
             <Pane prefHeight="17.0" prefWidth="154.0" />
             
             <Button fx:id="btnManagementUser" mnemonicParsing="false" onAction="#managementUser" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="GESTIÓN DE USUARIOS" />
+            <Pane prefHeight="16.0" prefWidth="154.0" />
+
+            <Button fx:id="btnReporteInventario" mnemonicParsing="false" onAction="#abrirReporteInventario" prefHeight="46.0" prefWidth="142.0" styleClass="admin-users" text="REPORTE DE INVENTARIO" />
             <Pane prefHeight="48.0" prefWidth="154.0" />
          </children>
       </VBox>

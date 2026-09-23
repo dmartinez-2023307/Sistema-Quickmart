@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.kinalquickmart.system.controller.InventoryReportController"
+            prefWidth="360" prefHeight="220"
+            styleClass="report-view"
+            stylesheets="@../resources/style/InventoryReportStyle.css">
+
+    <top>
+        <VBox styleClass="report-header" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="REPORTE DE VALOR DE INVENTARIO" wrapText="true"/>
+            </children>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox styleClass="report-body" BorderPane.alignment="CENTER">
+            <children>
+                <Label styleClass="report-subtitle" text="Valor monetario total en bodega"/>
+                <Label fx:id="lblValorTotal" styleClass="report-value" text="Q0.00"/>
+                <Label fx:id="lblFecha" styleClass="report-date" text=""/>
+            </children>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox styleClass="report-actions" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btnActualizar" styleClass="report-refresh-button" mnemonicParsing="false" onAction="#actualizarReporte" text="ACTUALIZAR"/>
+                <Button fx:id="btnCerrar" styleClass="report-close-button" mnemonicParsing="false" onAction="#cerrarVentana" text="CERRAR"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

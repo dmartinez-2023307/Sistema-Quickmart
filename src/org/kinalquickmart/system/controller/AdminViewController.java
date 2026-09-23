@@ -40,19 +40,34 @@ public class AdminViewController implements Initializable {
     private final AlertInformation alertInfo = new AlertInformation();
     private ObservableList<Product> listaProductos = FXCollections.observableArrayList();
 
-    @FXML private Button btnCreate;
-    @FXML private Button btnEdit;
-    @FXML private Button btnDelete;
-    @FXML private Button btnLogOut;
-    @FXML private Button btnManagementUser;
-    @FXML private Button btnSearch;
-    @FXML private TextField txtSearch;
-    @FXML private TableView<Product> inventoryTable;
-    @FXML private TableColumn<Product, Integer> colId;
-    @FXML private TableColumn<Product, String> colNombre;
-    @FXML private TableColumn<Product, String> colCategoria;
-    @FXML private TableColumn<Product, Integer> colStock;
-    @FXML private TableColumn<Product, BigDecimal> colPrecio;
+    @FXML
+    private Button btnCreate;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private Button btnLogOut;
+    @FXML
+    private Button btnManagementUser;
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private TextField txtSearch;
+    @FXML
+    private TableView<Product> inventoryTable;
+    @FXML
+    private TableColumn<Product, Integer> colId;
+    @FXML
+    private TableColumn<Product, String> colNombre;
+    @FXML
+    private TableColumn<Product, String> colCategoria;
+    @FXML
+    private TableColumn<Product, Integer> colStock;
+    @FXML
+    private TableColumn<Product, BigDecimal> colPrecio;
+    @FXML
+    private Button btnReporteInventario;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,47 +119,47 @@ public class AdminViewController implements Initializable {
         }
     }
 
-  @FXML
-private void deleteProduct() {
-    Product product = getSelectedProduct();
-    if (product == null) {
-        alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
-        return;
-    }
-
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmar Eliminación");
-    alert.setHeaderText("¿Estás seguro de que deseas eliminar este producto?");
-    alert.setContentText("Producto: " + product.getCommercialName());
-
-    ButtonType botonEliminar = new ButtonType("Eliminar", ButtonBar.ButtonData.OK_DONE);
-    ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
-    
-    alert.getButtonTypes().setAll(botonEliminar, botonCancelar);
-
-    Optional<ButtonType> resultado = alert.showAndWait();
-
-    if (resultado.isEmpty() || resultado.get() != botonEliminar) {
-        System.out.println("Eliminación cancelada por el usuario.");
-        return; 
-    }
-
-    String sql = "{CALL sp_eliminarProducto(?)}";
-
-    try {
-        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setInt(1, product.getId());
-            cs.executeUpdate();
-            
-            alertInfo.viewAlert("INFORMATION", "Éxito", "Producto eliminado correctamente.", "Eliminación");
-            readProduct(); 
+    @FXML
+    private void deleteProduct() {
+        Product product = getSelectedProduct();
+        if (product == null) {
+            alertInfo.viewAlert("WARNING", "Selección requerida", "Por favor, selecciona un producto de la tabla.", "Advertencia");
+            return;
         }
-    } catch (Exception e) {
-        alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo eliminar: " + e.getMessage(), "Error");
-        e.printStackTrace();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar Eliminación");
+        alert.setHeaderText("¿Estás seguro de que deseas eliminar este producto?");
+        alert.setContentText("Producto: " + product.getCommercialName());
+
+        ButtonType botonEliminar = new ButtonType("Eliminar", ButtonBar.ButtonData.OK_DONE);
+        ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(botonEliminar, botonCancelar);
+
+        Optional<ButtonType> resultado = alert.showAndWait();
+
+        if (resultado.isEmpty() || resultado.get() != botonEliminar) {
+            System.out.println("Eliminación cancelada por el usuario.");
+            return;
+        }
+
+        String sql = "{CALL sp_eliminarProducto(?)}";
+
+        try {
+            Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
+            try (CallableStatement cs = conn.prepareCall(sql)) {
+                cs.setInt(1, product.getId());
+                cs.executeUpdate();
+
+                alertInfo.viewAlert("INFORMATION", "Éxito", "Producto eliminado correctamente.", "Eliminación");
+                readProduct();
+            }
+        } catch (Exception e) {
+            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo eliminar: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
     }
-}
 
     @FXML
     private void searchProduct(ActionEvent event) {
@@ -203,19 +218,37 @@ private void deleteProduct() {
         }
     }
 
+    @FXML
+    private void abrirReporteInventario() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/InventoryReportView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("QuickMart - Reporte de Inventario");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo abrir el reporte de inventario: " + e.getMessage(), "Error");
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void managementUser() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EmployeeManagementView.fxml"));
             Parent root = loader.load();
-            
+
             Stage stage = new Stage();
             stage.setTitle("QuickMart - Gestión de Empleados");
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
-            
+
         } catch (IOException e) {
             alertInfo.viewAlert("ERROR", "Error de navegación", "No se pudo cargar la vista: " + e.getMessage(), "Error");
             e.printStackTrace();
@@ -272,22 +305,24 @@ private void deleteProduct() {
     private Product getSelectedProduct() {
         return inventoryTable.getSelectionModel().getSelectedItem();
     }
-    
-  
-    public void configurarPermisos(String rol) {
-        if (rol == null) return;
 
-        switch (rol) {       
+    public void configurarPermisos(String rol) {
+        if (rol == null) {
+            return;
+        }
+
+        switch (rol) {
             case "Bodeguero":
-                
+                btnReporteInventario.setVisible(false);
+                btnReporteInventario.setManaged(false);
+
                 btnDelete.setVisible(false);
                 btnDelete.setManaged(false);
-                
-                
+
                 btnManagementUser.setVisible(false);
                 btnManagementUser.setManaged(false);
                 break;
-                
+
             case "Administrador":
             default:
                 break;

@@ -39,7 +39,7 @@ public final class PasswordUtil {
     }
 
     public static void main(String[] args) {
-        String[] passwords = args.length > 0 ? args : new String[] { "12345" };
+        String[] passwords = args.length > 0 ? args : new String[] { "12345", "4567867", "1238" };
         for (String clave : passwords) {
             System.out.println(clave + "  ->  " + hash(clave));
         }

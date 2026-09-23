@@ -5,8 +5,8 @@ CALL sp_crearCategoria('Limpieza', 'Productos de aseo personal y del hogar');
 CALL sp_crearCategoria('Panadería', 'Pan, galletas y productos horneados');
 
 CALL sp_crearUsuario('admin@gmail.com', '$2a$12$xT5CWiOv3csyT9reKWnlaeB6J6DDSPPFnNgfv/kTGCy4T9KDfW1CC', 'Pablo Us', 'Administrador');
-CALL sp_crearUsuario('cajero@gmail.com', '4567867', 'Cristian Hoffens', 'Cajero');
-CALL sp_crearUsuario('bodeguero@gmail.com', '1238', 'Omar Castillo', 'Bodeguero');
+CALL sp_crearUsuario('cajero@gmail.com', '$2a$12$rdvh/zvOOfyYTj2xu7G6du/goERuf3QJs/VCRbu6r4NYMX2xImOBe', 'Cristian Hoffens', 'Cajero');
+CALL sp_crearUsuario('bodeguero@gmail.com', '$2a$12$d1CgI.8/bo3AeVPzL7/hweObuDaw9LMsWn7zp.NIQ10Zv87WAR80m', 'Omar Castillo', 'Bodeguero');
 
 
 -- LÁCTEOS
