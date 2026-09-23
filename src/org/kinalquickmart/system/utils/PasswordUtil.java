@@ -2,10 +2,7 @@ package org.kinalquickmart.system.utils;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-/**
- * Encriptación (hash) de contraseñas usando BCrypt (librería at.favre.lib:bcrypt).
- * Requiere en el classpath: bcrypt-0.10.2.jar y bytes-1.6.1.jar.
- */
+
 public final class PasswordUtil {
 
     private static final int COSTO = 12;
@@ -13,25 +10,21 @@ public final class PasswordUtil {
     private PasswordUtil() {
     }
 
-    /** Genera el hash que se guarda en la columna password de la tabla Usuario. */
     public static String hash(String passwordPlano) {
         return BCrypt.withDefaults().hashToString(COSTO, passwordPlano.toCharArray());
     }
 
-    /**
-     * Compara la contraseña escrita por el usuario contra el valor guardado en la BD.
-     * Si lo guardado es un hash BCrypt lo verifica con BCrypt; si es texto plano
-     * (como el admin semilla del DML.sql, que no pasa por Java) lo compara directo.
-     */
+
     public static boolean verificar(String passwordPlano, String hashGuardado) {
-        if (passwordPlano == null || hashGuardado == null || hashGuardado.isBlank()) {
+        if (passwordPlano == null || passwordPlano.isEmpty()
+                || hashGuardado == null || hashGuardado.isBlank()) {
             return false;
         }
-        if (esHashBCrypt(hashGuardado)) {
-            BCrypt.Result resultado = BCrypt.verifyer().verify(passwordPlano.toCharArray(), hashGuardado.toCharArray());
-            return resultado.verified;
+        if (!esHashBCrypt(hashGuardado)) {
+            return false;
         }
-        return passwordPlano.equals(hashGuardado);
+        BCrypt.Result resultado = BCrypt.verifyer().verify(passwordPlano.toCharArray(), hashGuardado.toCharArray());
+        return resultado.verified;
     }
 
     private static boolean esHashBCrypt(String valor) {
