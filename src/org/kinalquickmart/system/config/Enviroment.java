@@ -10,8 +10,8 @@ package org.kinalquickmart.system.config;
  * @author informatica
  */
 public class Enviroment {
-    protected static final String USER = "IN4AM";
-    protected static final String PASSWORD = "@dmin4AM";
+    protected static final String USER = "root";
+    protected static final String PASSWORD = "in4am";
     protected static final String DATA_BASE = "sistema_catalogo_in4am";
     protected static final String LOCATION_SERVICE = "localhost:3306";
 }

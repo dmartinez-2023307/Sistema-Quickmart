@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="665.0" styleClass="cashier-view" stylesheets="@../resources/style/CashierStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.CashierController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="665.0" styleClass="cashier-view" stylesheets="@../resources/style/CashierStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.CashierController">
         <top>
             <Pane prefHeight="65.0" prefWidth="550.0" styleClass="cashier-header" BorderPane.alignment="CENTER">
                 <children>
@@ -22,7 +22,7 @@
                             <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                         </image>
                     </ImageView>
-                    <Label layoutX="420.0" layoutY="19.0" prefHeight="27.0" prefWidth="85.0" text="CAJERO">
+                    <Label layoutX="548.0" layoutY="19.0" prefHeight="27.0" prefWidth="85.0" text="CAJERO">
                         <font>
                             <Font size="20.0" />
                         </font>
@@ -62,7 +62,14 @@
                     </HBox>
                     <HBox prefHeight="63.0" prefWidth="505.0" styleClass="cashier-total">
                         <children>
-                            <Pane prefHeight="63.0" prefWidth="261.0" />
+                            <Pane prefHeight="63.0" prefWidth="261.0">
+                     <children>
+                        <Button fx:id="btnLogOut" layoutX="14.0" layoutY="16.0" mnemonicParsing="false" onAction="#logOutUser" prefHeight="31.0" prefWidth="141.0" styleClass="cashier-logout" text="CERRAR SESIÓN">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children></Pane>
                             <VBox prefHeight="63.0" prefWidth="237.0">
                                 <children>
                                     <HBox prefHeight="30.0" prefWidth="237.0">
