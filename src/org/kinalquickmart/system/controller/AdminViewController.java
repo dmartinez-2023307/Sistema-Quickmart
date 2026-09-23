@@ -92,32 +92,34 @@ public class AdminViewController implements Initializable {
         }
     }
 
-    @FXML
-    private void editProduct() {
-        Product product = getSelectedProduct();
-        if (product == null) {
-            alertInfo.viewAlert("WARNING", "Advertencia", "Por favor, selecciona un producto de la tabla.", "Sin selección");
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
-            Parent root = loader.load();
-
-            EditProductController controller = loader.getController();
-            controller.setProduct(product);
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Editar Producto: " + product.getCommercialName());
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
-        }
+@FXML
+private void editProduct() {
+    Product product = getSelectedProduct();
+    if (product == null) {
+        alertInfo.viewAlert("WARNING", "Advertencia", "Por favor, selecciona un producto de la tabla.", "Sin selección");
+        return;
     }
+
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/kinalquickmart/system/view/EditProduct.fxml"));
+        Parent root = loader.load();
+
+        EditProductController controller = loader.getController();
+        controller.setProduct(product);
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Editar Producto: " + product.getCommercialName());
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+
+        readProduct();  
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        alertInfo.viewAlert("ERROR", "Error", "No se pudo abrir el formulario de edición.\nDetalle: " + e.getMessage(), "Error");
+    }
+}
 
     @FXML
     private void deleteProduct() {

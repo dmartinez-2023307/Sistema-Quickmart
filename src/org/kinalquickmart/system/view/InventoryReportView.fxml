@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.kinalquickmart.system.controller.InventoryReportController"
-            prefWidth="360" prefHeight="220"
-            styleClass="report-view"
-            stylesheets="@../resources/style/InventoryReportStyle.css">
+<BorderPane prefHeight="269.0" prefWidth="450.0" styleClass="report-view" stylesheets="@../resources/style/InventoryReportStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.InventoryReportController">
 
     <top>
         <VBox styleClass="report-header" BorderPane.alignment="CENTER">
             <children>
-                <Label text="REPORTE DE VALOR DE INVENTARIO" wrapText="true"/>
+                <Label text="REPORTE DE VALOR DE INVENTARIO" wrapText="true" />
             </children>
         </VBox>
     </top>
@@ -21,9 +19,9 @@
     <center>
         <VBox styleClass="report-body" BorderPane.alignment="CENTER">
             <children>
-                <Label styleClass="report-subtitle" text="Valor monetario total en bodega"/>
-                <Label fx:id="lblValorTotal" styleClass="report-value" text="Q0.00"/>
-                <Label fx:id="lblFecha" styleClass="report-date" text=""/>
+                <Label prefHeight="35.0" prefWidth="209.0" styleClass="report-subtitle" text="Valor monetario total en bodega" />
+                <Label fx:id="lblValorTotal" prefHeight="37.0" prefWidth="184.0" styleClass="report-value" text="Q0.00" />
+                <Label fx:id="lblFecha" styleClass="report-date" text="" />
             </children>
         </VBox>
     </center>
@@ -31,8 +29,8 @@
     <bottom>
         <HBox styleClass="report-actions" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btnActualizar" styleClass="report-refresh-button" mnemonicParsing="false" onAction="#actualizarReporte" text="ACTUALIZAR"/>
-                <Button fx:id="btnCerrar" styleClass="report-close-button" mnemonicParsing="false" onAction="#cerrarVentana" text="CERRAR"/>
+                <Button fx:id="btnActualizar" mnemonicParsing="false" onAction="#actualizarReporte" styleClass="report-refresh-button" text="ACTUALIZAR" />
+                <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cerrarVentana" styleClass="report-close-button" text="CERRAR" />
             </children>
         </HBox>
     </bottom>

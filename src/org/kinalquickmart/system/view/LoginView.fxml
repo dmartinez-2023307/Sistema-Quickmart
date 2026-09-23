@@ -12,14 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="login-view" stylesheets="@../resources/style/LoginStyle.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="655.0" styleClass="login-view" stylesheets="@../resources/style/LoginStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.LoginController">
    
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="login-form" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="108.0" prefWidth="237.0" />
             
-            <Label text="Correo">
+            <Label prefHeight="30.0" prefWidth="62.0" text="Correo">
                <font>
                   <Font size="22.0" />
                </font>
@@ -35,7 +35,7 @@
             
             <Pane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnIniciarSesion" layoutX="91.0" layoutY="13.0" mnemonicParsing="false" onAction="#login" prefHeight="41.0" prefWidth="180.0" styleClass="login-button" text="INICIAR SESION" />
+                  <Button fx:id="btnIniciarSesion" layoutX="115.0" layoutY="33.0" mnemonicParsing="false" onAction="#login" prefHeight="41.0" prefWidth="180.0" styleClass="login-button" text="INICIAR SESION" />
                </children>
             </Pane>
          </children>
@@ -48,7 +48,7 @@
    <left>
       <VBox prefHeight="400.0" prefWidth="169.0" styleClass="login-logo" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="96.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="98.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/image/Gemini_Generated_Image_9sxwt69sxwt69sxw-removebg-preview%203.png" />
                </image>
@@ -59,7 +59,7 @@
    <top>
       <Pane prefHeight="85.0" prefWidth="600.0" styleClass="login-brand" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="188.0" layoutY="-4.0" prefHeight="94.0" prefWidth="225.0" styleClass="login-title" text="LOGIN QUICKMART">
+            <Label layoutX="215.0" layoutY="-4.0" prefHeight="94.0" prefWidth="225.0" styleClass="login-title" text="LOGIN QUICKMART">
                <font>
                   <Font name="System Bold Italic" size="19.0" />
                </font>
