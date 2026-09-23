@@ -164,3 +164,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .cashier-finish:pressed {
     -fx-background-color: #C56510;
 }
+
+.cashier-logout {
+    -fx-background-color: #F1F3F4;
+    -fx-text-fill: #52636D;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 7px;
+    -fx-border-radius: 7px;
+    -fx-padding: 10px 8px;
+    -fx-cursor: hand;
+}
+
+.cashier-logout:hover {
+    -fx-background-color: #2D8BB8;
+    -fx-text-fill: white;
+}
+
+.cashier-logout:pressed {
+    -fx-background-color: #1F6E90;
+    -fx-text-fill: white;
+}
