@@ -1,9 +1,10 @@
-package org.kinalquickmart.system.config;
+package org.kinalquickmart.system.dao;
 
 import org.kinalquickmart.system.model.Category;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.kinalquickmart.system.config.ConexionDB;
 
 public class CategoryDAO {
     

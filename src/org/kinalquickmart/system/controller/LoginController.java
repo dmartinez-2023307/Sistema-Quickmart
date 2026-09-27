@@ -1,9 +1,6 @@
 package org.kinalquickmart.system.controller;
 
 import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,14 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.kinalquickmart.system.config.ConexionDB;
+import org.kinalquickmart.system.model.Employee;
+import org.kinalquickmart.system.service.EmployeeService;
 import org.kinalquickmart.system.utils.AlertInformation;
-import org.kinalquickmart.system.utils.PasswordUtil;
 
 public class LoginController {
 
     private static final String RUTA_VISTAS = "/org/kinalquickmart/system/view/";
     private final AlertInformation alertInfo = new AlertInformation();
+    private final EmployeeService empService = new EmployeeService();
 
     @FXML
     private TextField txtCorreo;
@@ -31,135 +29,54 @@ public class LoginController {
     private Button btnIniciarSesion;
 
     @FXML
-    private void initialize() {
-    }
-
-    @FXML
     private void login() {
         String correo = txtCorreo.getText().trim();
         String password = txtPassword.getText().trim();
 
         if (correo.isEmpty() || password.isEmpty()) {
-            alertInfo.viewAlert(
-                    "WARNING",
-                    "Campos vacíos",
-                    "Por favor, ingresa tu correo y contraseña.",
-                    "Validación de campos"
-            );
+            alertInfo.viewAlert("WARNING", "Campos vacíos", "Por favor, ingresa tu correo y contraseña.", "Validación");
             return;
         }
 
-        validarCredenciales(correo, password);
+        // Delegamos la validación al Service
+        Employee usuario = empService.login(correo, password);
+
+        if (usuario != null) {
+            System.out.println("✅ Login exitoso para: " + usuario.getFullName() + " | Rol: " + usuario.getRole());
+            navegarSegunRol(usuario);
+        } else {
+            alertInfo.viewAlert("ERROR", "Acceso denegado", "Correo o contraseña incorrectos, o usuario inactivo.", "Error");
+            txtPassword.clear();
+            txtPassword.requestFocus();
+        }
     }
 
-    private void validarCredenciales(String correo, String password) {
-        String sql = "{CALL sp_validarLogin(?)}";
+    private void navegarSegunRol(Employee usuario) {
+        // Declaramos la variable ANTES del try para que el catch también pueda verla
+        String vistaDestino = "Cajero".equals(usuario.getRole()) ? "CashierView.fxml" : "AdminView.fxml";
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + vistaDestino));
+            Parent root = loader.load();
 
-        Connection conn = ConexionDB.getInstanciaConexionDB().getConnection();
-        if (conn == null) {
-            alertInfo.viewAlert("ERROR", "Error de Sistema", "No hay conexión a la base de datos.", "Error");
-            return;
-        }
-
-        try (CallableStatement cs = conn.prepareCall(sql)) {
-            cs.setString(1, correo);
-
-            try (ResultSet rs = cs.executeQuery()) {
-                if (!rs.next()) {
-                    credencialesInvalidas();
-                    return;
-                }
-
-                String hashGuardado = rs.getString("password");
-                if (!PasswordUtil.verificar(password, hashGuardado)) {
-                    credencialesInvalidas();
-                    return;
-                }
-
-                int idUsuario = rs.getInt("id_usuario");
-                String nombreUsuario = rs.getString("nombre_completo");
-                String rolUsuario = rs.getString("rol");
-
-                System.out.println("✅ Login exitoso para: " + nombreUsuario + " | Rol: " + rolUsuario);
-
-                String vistaDestino = "Cajero".equals(rolUsuario) ? "CashierView.fxml" : "AdminView.fxml";
-
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + vistaDestino));
-                    Parent root = loader.load();
-
-                    if ("Cajero".equals(rolUsuario)) {
-                        CashierController cajeroController = loader.getController();
-                        cajeroController.setCajeroData(idUsuario, nombreUsuario);
-                    } else {
-                        AdminViewController adminController = loader.getController();
-                        adminController.configurarPermisos(rolUsuario);
-                    }
-
-                    Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("QuickMart - " + rolUsuario);
-                    stage.show();
-
-                } catch (IOException e) {
-                    alertInfo.viewAlert("ERROR", "Error", "No se pudo cargar la vista: " + vistaDestino, "Error");
-                    e.printStackTrace();
-                }
-
+            // Pasar datos al controller destino si es necesario
+            if ("Cajero".equals(usuario.getRole())) {
+                CashierController cajeroController = loader.getController();
+                cajeroController.setCajeroData(usuario.getId(), usuario.getFullName());
+            } else {
+                AdminViewController adminController = loader.getController();
+                adminController.configurarPermisos(usuario.getRole());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertInfo.viewAlert("ERROR", "Error de Base de Datos", "No se pudo conectar: " + e.getMessage(), "Error");
-        }
-    }
-
-    private void credencialesInvalidas() {
-        alertInfo.viewAlert("ERROR", "Acceso denegado", "Correo o contraseña incorrectos.", "Error de autenticación");
-        txtPassword.clear();
-        txtPassword.requestFocus();
-    }
-
-    private void navegarAdminView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + "AdminView.fxml"));
-            Parent root = loader.load();
 
             Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
-            stage.setTitle("QuickMart - Panel de Administrador");
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
+            stage.setTitle("QuickMart - " + usuario.getRole());
             stage.show();
 
         } catch (IOException e) {
+            // Ahora sí funciona, porque vistaDestino existe en este ámbito
+            alertInfo.viewAlert("ERROR", "Error", "No se pudo cargar la vista: " + vistaDestino, "Error");
             e.printStackTrace();
-            alertInfo.viewAlert(
-                    "ERROR",
-                    "Error de Navegación",
-                    "No se pudo cargar el panel de administrador.",
-                    "Error del sistema"
-            );
-        }
-    }
-
-    private void navegarCashierView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(RUTA_VISTAS + "CashierView.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
-            stage.setTitle("QuickMart - Punto de Venta");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            alertInfo.viewAlert(
-                    "ERROR",
-                    "Error de Navegación",
-                    "No se pudo cargar la vista de cajero.",
-                    "Error del sistema"
-            );
         }
     }
 }
