@@ -28,3 +28,4 @@ replay_pid*
 /nbproject/private/
 /build/
 /dist/
+echo "src/org/kinalquickmart/system/config/Enviroment.java" >> .gitignore
