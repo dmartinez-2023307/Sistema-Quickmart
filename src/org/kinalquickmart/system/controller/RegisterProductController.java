@@ -3,36 +3,32 @@ package org.kinalquickmart.system.controller;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextField;
-import org.kinalquickmart.system.config.CategoryDAO;
-import org.kinalquickmart.system.config.ProductDAO;
 import org.kinalquickmart.system.model.Category;
 import org.kinalquickmart.system.model.Product;
+import org.kinalquickmart.system.service.CategoryService;
+import org.kinalquickmart.system.service.ProductService;
 import org.kinalquickmart.system.utils.AlertInformation;
 
 public class RegisterProductController implements Initializable {
 
-    @FXML
-    private TextField txtBarCode;
-    @FXML
-    private TextField txtProductName;
-    @FXML
-    private TextField txtCostPrice;
-    @FXML
-    private TextField txtSalePrice;
-    @FXML
-    private TextField txtStock;
-    @FXML
-    private ComboBox<Category> cmbCategory;
-    @FXML
-    private Button btnRegister;
+    @FXML private TextField txtBarCode;
+    @FXML private TextField txtProductName;
+    @FXML private TextField txtCostPrice;
+    @FXML private TextField txtSalePrice;
+    @FXML private TextField txtStock;
+    @FXML private ComboBox<Category> cmbCategory;
+    @FXML private Button btnRegister;
 
-    private final CategoryDAO categoryDAO = new CategoryDAO();
-    private final ProductDAO productDAO = new ProductDAO();
+    private final CategoryService categoryService = new CategoryService();
+    private final ProductService productService = new ProductService();
     private final AlertInformation alertInfo = new AlertInformation();
 
     @Override
@@ -42,48 +38,41 @@ public class RegisterProductController implements Initializable {
     }
 
     private void cargarCategorias() {
-        cmbCategory.getItems().setAll(categoryDAO.getAllCategories());
+        cmbCategory.getItems().setAll(categoryService.getAllCategories());
     }
 
     private void configurarValidaciones() {
-        // Solo permitir números en código de barras
-        txtBarCode.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                txtBarCode.setText(oldValue);
+        // Filtro: solo números (para código de barras y stock)
+        Pattern soloNumeros = Pattern.compile("\\d*");
+        UnaryOperator<TextFormatter.Change> filterNumeros = change -> {
+            String newText = change.getControlNewText();
+            if (soloNumeros.matcher(newText).matches()) {
+                return change;
             }
-        });
+            return null;
+        };
 
-        // Solo permitir números y punto decimal en precios
-        String decimalRegex = "\\d*\\.?\\d{0,2}";
-        txtCostPrice.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches(decimalRegex)) {
-                txtCostPrice.setText(oldValue);
+        // Filtro: números con hasta 2 decimales (para precios)
+        Pattern decimalPattern = Pattern.compile("\\d*\\.?\\d{0,2}");
+        UnaryOperator<TextFormatter.Change> filterDecimal = change -> {
+            String newText = change.getControlNewText();
+            if (decimalPattern.matcher(newText).matches()) {
+                return change;
             }
-        });
+            return null;
+        };
 
-        txtSalePrice.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches(decimalRegex)) {
-                txtSalePrice.setText(oldValue);
-            }
-        });
-
-        // Solo permitir números enteros en stock
-        txtStock.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                txtStock.setText(oldValue);
-            }
-        });
+        // Aplicar los filtros a cada TextField
+        txtBarCode.setTextFormatter(new TextFormatter<>(filterNumeros));
+        txtStock.setTextFormatter(new TextFormatter<>(filterNumeros));
+        txtCostPrice.setTextFormatter(new TextFormatter<>(filterDecimal));
+        txtSalePrice.setTextFormatter(new TextFormatter<>(filterDecimal));
     }
 
     @FXML
     private void handleRegisterProduct() {
         if (camposVacios()) {
-            alertInfo.viewAlert(
-                    "WARNING",
-                    "Campos Incompletos",
-                    "Por favor, complete todos los campos obligatorios.",
-                    "Validación de campos"
-            );
+            alertInfo.viewAlert("WARNING", "Campos Incompletos", "Por favor, complete todos los campos obligatorios.", "Validación");
             return;
         }
 
@@ -91,36 +80,6 @@ public class RegisterProductController implements Initializable {
             BigDecimal costPrice = new BigDecimal(txtCostPrice.getText());
             BigDecimal salePrice = new BigDecimal(txtSalePrice.getText());
             int stock = Integer.parseInt(txtStock.getText());
-
-            if (costPrice.compareTo(BigDecimal.ZERO) <= 0) {
-                alertInfo.viewAlert(
-                        "ERROR",
-                        "Precio Inválido",
-                        "El precio de costo debe ser mayor a 0.",
-                        "Validación de precio"
-                );
-                return;
-            }
-
-            if (salePrice.compareTo(costPrice) <= 0) {
-                alertInfo.viewAlert(
-                        "ERROR",
-                        "Precio Inválido",
-                        "El precio de venta debe ser MAYOR que el precio de costo.",
-                        "Validación de precio"
-                );
-                return;
-            }
-
-            if (stock < 0) {
-                alertInfo.viewAlert(
-                        "ERROR",
-                        "Stock Inválido",
-                        "El stock no puede ser un número negativo.",
-                        "Validación de stock"
-                );
-                return;
-            }
 
             Product newProduct = new Product();
             newProduct.setBarCode(txtBarCode.getText().trim());
@@ -130,60 +89,32 @@ public class RegisterProductController implements Initializable {
             newProduct.setCurrentStock(stock);
             newProduct.setCategory(cmbCategory.getValue());
 
-            if (productDAO.saveProduct(newProduct)) {
-                String mensajeConfirmacion = String.format(
-                        "Producto: %s\nCódigo: %s\nStock registrado: %d unidades\nPrecio venta: Q%.2f",
-                        newProduct.getCommercialName(),
-                        newProduct.getBarCode(),
-                        newProduct.getCurrentStock(),
-                        newProduct.getSalePrice()
-                );
-
-                alertInfo.viewAlert(
-                        "INFORMATION",
-                        "Registro Exitoso",
-                        mensajeConfirmacion,
-                        "Producto guardado correctamente"
-                );
+            if (productService.registerProduct(newProduct)) {
+                String mensaje = String.format("Producto: %s\nCódigo: %s\nStock: %d\nPrecio: Q%.2f",
+                        newProduct.getCommercialName(), newProduct.getBarCode(), newProduct.getCurrentStock(), newProduct.getSalePrice());
+                alertInfo.viewAlert("INFORMATION", "Registro Exitoso", mensaje, "Producto guardado");
                 limpiarCampos();
             } else {
-                alertInfo.viewAlert(
-                        "ERROR",
-                        "Error de Registro",
-                        "El código de barras ya existe. Por favor, utilice un código único.",
-                        "Error de base de datos"
-                );
+                alertInfo.viewAlert("ERROR", "Error de Registro", "El código de barras ya existe o los datos son inválidos.", "Error");
                 txtBarCode.requestFocus();
                 txtBarCode.selectAll();
             }
-
         } catch (NumberFormatException e) {
-            alertInfo.viewAlert(
-                    "ERROR",
-                    "Formato Inválido",
-                    "Verifique que los precios y el stock sean números válidos.",
-                    "Error de formato"
-            );
+            alertInfo.viewAlert("ERROR", "Formato Inválido", "Verifique que los precios y el stock sean números válidos.", "Error");
         }
     }
 
     @FXML
     private void limpiarCampos() {
-        txtBarCode.clear();
-        txtProductName.clear();
-        txtCostPrice.clear();
-        txtSalePrice.clear();
-        txtStock.clear();
+        txtBarCode.clear(); txtProductName.clear(); txtCostPrice.clear();
+        txtSalePrice.clear(); txtStock.clear();
         cmbCategory.getSelectionModel().clearSelection();
         txtBarCode.requestFocus();
     }
 
     private boolean camposVacios() {
-        return txtBarCode.getText().isEmpty()
-                || txtProductName.getText().isEmpty()
-                || txtCostPrice.getText().isEmpty()
-                || txtSalePrice.getText().isEmpty()
-                || txtStock.getText().isEmpty()
-                || cmbCategory.getValue() == null;
+        return txtBarCode.getText().isEmpty() || txtProductName.getText().isEmpty() ||
+               txtCostPrice.getText().isEmpty() || txtSalePrice.getText().isEmpty() ||
+               txtStock.getText().isEmpty() || cmbCategory.getValue() == null;
     }
 }

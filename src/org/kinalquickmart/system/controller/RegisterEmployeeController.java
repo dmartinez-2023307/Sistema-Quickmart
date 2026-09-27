@@ -11,8 +11,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.kinalquickmart.system.config.EmployeeDAO;
 import org.kinalquickmart.system.model.Employee;
+import org.kinalquickmart.system.service.EmployeeService;
 import org.kinalquickmart.system.utils.AlertInformation;
 import org.kinalquickmart.system.utils.PasswordUtil;
 
@@ -29,7 +29,7 @@ public class RegisterEmployeeController implements Initializable {
     @FXML
     private Button btnRegisterUser;
 
-    private final EmployeeDAO employeeDAO = new EmployeeDAO();
+    private final EmployeeService empService = new EmployeeService();
     private final AlertInformation alertInfo = new AlertInformation();
 
     private Employee employeeToEdit;
@@ -41,8 +41,7 @@ public class RegisterEmployeeController implements Initializable {
     }
 
     private void cargarRoles() {
-        List<String> roles = Arrays.asList("Cajero", "Bodeguero");  // Sin Administrador
-        cmbRole.getItems().setAll(roles);
+        cmbRole.getItems().setAll(Arrays.asList("Cajero", "Bodeguero"));
     }
 
     public void setTableViewUpdater(Runnable updater) {
@@ -53,63 +52,38 @@ public class RegisterEmployeeController implements Initializable {
         this.employeeToEdit = employee;
         txtFullName.setText(employee.getFullName());
         txtEmail.setText(employee.getEmail());
-        pwdPassword.clear(); // nunca se muestra el hash; se escribe una contraseña nueva
+        pwdPassword.clear();
         cmbRole.setValue(employee.getRole());
         btnRegisterUser.setText("ACTUALIZAR");
     }
 
     @FXML
     private void handleRegister() {
-        if (txtFullName.getText().trim().isEmpty()
-                || txtEmail.getText().trim().isEmpty()
-                || pwdPassword.getText().trim().isEmpty()
-                || cmbRole.getValue() == null) {
-
+        if (txtFullName.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty()
+                || pwdPassword.getText().trim().isEmpty() || cmbRole.getValue() == null) {
             alertInfo.viewAlert("WARNING", "Campos incompletos", "Por favor, complete todos los campos.", "Validación");
             return;
         }
 
-        // Validar formato de correo (opcional pero recomendado)
         String email = txtEmail.getText().trim();
         if (!email.contains("@") || !email.contains(".")) {
             alertInfo.viewAlert("WARNING", "Correo inválido", "El correo electrónico no tiene un formato válido.", "Validación");
             return;
-        }  
-
-        // Verificar si el correo ya existe ANTES de intentar guardar
-        boolean correoCambio = employeeToEdit == null
-                || !email.equalsIgnoreCase(employeeToEdit.getEmail());
-        if (correoCambio && employeeDAO.emailExists(email)) {
-            alertInfo.viewAlert("WARNING", "Correo duplicado",
-                    "El correo '" + email + "' ya está registrado en el sistema.\nPor favor, use un correo diferente.",
-                    "Correo existente");
-            txtEmail.clear();  // Limpia el campo para que el usuario lo corrija
-            txtEmail.requestFocus();  // Pone el cursor en el campo
-            return;
         }
 
         if (employeeToEdit != null) {
-            // MODO EDICIÓN
             employeeToEdit.setFullName(txtFullName.getText().trim());
             employeeToEdit.setEmail(email);
             employeeToEdit.setPassword(PasswordUtil.hash(pwdPassword.getText().trim()));
             employeeToEdit.setRole(cmbRole.getValue());
 
-            if (employeeDAO.updateEmployee(employeeToEdit)) {
+            if (empService.updateEmployee(employeeToEdit)) {
                 alertInfo.viewAlert("INFORMATION", "Éxito", "Empleado actualizado correctamente.", "Actualización");
-                limpiarCampos();
-
-                if (tableViewUpdater != null) {
-                    javafx.application.Platform.runLater(() -> tableViewUpdater.run());
-                }
-
-                Stage stage = (Stage) btnRegisterUser.getScene().getWindow();
-                stage.close();
+                cerrarYActualizar();
             } else {
                 alertInfo.viewAlert("ERROR", "Error", "No se pudo actualizar el empleado.", "Error");
             }
         } else {
-            // MODO CREAR
             Employee newEmployee = new Employee();
             newEmployee.setFullName(txtFullName.getText().trim());
             newEmployee.setEmail(email);
@@ -117,20 +91,24 @@ public class RegisterEmployeeController implements Initializable {
             newEmployee.setRole(cmbRole.getValue());
             newEmployee.setActive(true);
 
-            if (employeeDAO.saveEmployee(newEmployee)) {
+            if (empService.registerEmployee(newEmployee)) {
                 alertInfo.viewAlert("INFORMATION", "Éxito", "Empleado registrado correctamente.", "Registro");
-                limpiarCampos();
-
-                if (tableViewUpdater != null) {
-                    javafx.application.Platform.runLater(() -> tableViewUpdater.run());
-                }
-
-                Stage stage = (Stage) btnRegisterUser.getScene().getWindow();
-                stage.close();
+                cerrarYActualizar();
             } else {
-                alertInfo.viewAlert("ERROR", "Error", "No se pudo registrar el empleado.", "Error");
+                alertInfo.viewAlert("WARNING", "Correo duplicado", "El correo ya está registrado.", "Error");
+                txtEmail.clear();
+                txtEmail.requestFocus();
             }
         }
+    }
+
+    private void cerrarYActualizar() {
+        limpiarCampos();
+        if (tableViewUpdater != null) {
+            javafx.application.Platform.runLater(() -> tableViewUpdater.run());
+        }
+        Stage stage = (Stage) btnRegisterUser.getScene().getWindow();
+        stage.close();
     }
 
     private void limpiarCampos() {
