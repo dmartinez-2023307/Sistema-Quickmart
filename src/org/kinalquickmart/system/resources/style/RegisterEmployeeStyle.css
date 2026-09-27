@@ -1,0 +1,113 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 9 sept 2026, 09:06:01
+    Author     : informatica
+*/
+
+/* =====================================================
+   QUICKMART - REGISTRAR EMPLEADO
+   ===================================================== */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #F5F8FA;
+}
+
+.register-view {
+    -fx-background-color: #F5F8FA;
+}
+
+/* =====================================================
+   ENCABEZADO
+   ===================================================== */
+
+.register-header {
+    -fx-background-color: #164A70;
+    -fx-padding: 10px 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.2, 0, 2);
+}
+
+.register-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* =====================================================
+   FORMULARIO
+   ===================================================== */
+
+.register-form {
+    -fx-background-color: white;
+    -fx-padding: 22px;
+    -fx-spacing: 14px;
+    -fx-alignment: CENTER;
+}
+
+.register-form .label {
+    -fx-text-fill: #164A70;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* =====================================================
+   CAMPOS
+   ===================================================== */
+
+.register-name,
+.register-email,
+.register-password {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #CFDCE3;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+    -fx-padding: 9px 10px;
+}
+
+.register-name:focused,
+.register-email:focused,
+.register-password:focused {
+    -fx-border-color: #2D8BB8;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+}
+
+/* =====================================================
+   ROL
+   ===================================================== */
+
+.register-role {
+    -fx-background-color: white;
+    -fx-border-color: #CFDCE3;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 7px;
+}
+
+.register-role:focused {
+    -fx-border-color: #2D8BB8;
+}
+
+/* =====================================================
+   REGISTRAR
+   ===================================================== */
+
+.register-button {
+    -fx-background-color: #F28C28;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 30px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.register-button:hover {
+    -fx-background-color: #DB7417;
+}
+
+.register-button:pressed {
+    -fx-background-color: #C56510;
+}

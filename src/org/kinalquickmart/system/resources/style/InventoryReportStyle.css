@@ -1,0 +1,86 @@
+/* =====================================================
+   QUICKMART - REPORTE DE VALOR DE INVENTARIO (US-2.3)
+   ===================================================== */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #F5F8FA;
+}
+
+.report-view {
+    -fx-background-color: #F5F8FA;
+}
+
+/* ENCABEZADO */
+.report-header {
+    -fx-background-color: #164A70;
+    -fx-padding: 12px 10px;
+    -fx-alignment: CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 8, 0.2, 0, 2);
+}
+
+.report-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+
+/* CUERPO */
+.report-body {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-spacing: 8px;
+    -fx-alignment: CENTER;
+}
+
+.report-subtitle {
+    -fx-text-fill: #555555;
+    -fx-font-size: 13px;
+}
+
+.report-value {
+    -fx-text-fill: #27ae60;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
+.report-date {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+}
+
+/* ACCIONES */
+.report-actions {
+    -fx-padding: 12px 20px;
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.report-refresh-button {
+    -fx-background-color: #2D8BB8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.report-refresh-button:hover {
+    -fx-background-color: #23708F;
+}
+
+.report-close-button {
+    -fx-background-color: #7f8c8d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.report-close-button:hover {
+    -fx-background-color: #626e6f;
+}

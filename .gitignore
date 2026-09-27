@@ -12,6 +12,8 @@
 
 # Package Files #
 *.jar
+!lib/
+!lib/*.jar
 *.war
 *.nar
 *.ear
@@ -25,3 +27,4 @@ replay_pid*
 /sistema-quickmart/nbproject/private/
 /nbproject/private/
 /build/
+/dist/
