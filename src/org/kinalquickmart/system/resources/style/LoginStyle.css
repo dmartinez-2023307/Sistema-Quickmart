@@ -1,0 +1,148 @@
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: #F4F7FA;
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+   ========================= */
+
+.login-view {
+    -fx-background-color: #F4F7FA;
+}
+
+/* =========================
+   ENCABEZADO
+   ========================= */
+
+.login-brand {
+    -fx-background-color: #123F5D;
+    -fx-padding: 15px 25px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.login-brand .label {
+    -fx-text-fill: white;
+}
+
+.login-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.login-brand .login-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #C9DCE7;
+}
+
+/* =========================
+   PANEL IZQUIERDO
+   ========================= */
+
+.login-logo {
+    -fx-background-color: #EAF4F8;
+    -fx-alignment: CENTER;
+    -fx-padding: 30px;
+}
+
+.login-logo .label {
+    -fx-text-fill: #123F5D;
+}
+
+.login-logo .login-subtitle {
+    -fx-text-fill: #617984;
+    -fx-font-size: 13px;
+}
+
+/* =========================
+   FORMULARIO
+   ========================= */
+
+.login-form {
+    -fx-background-color: white;
+    -fx-padding: 35px 45px;
+    -fx-spacing: 12px;
+    -fx-alignment: CENTER_LEFT;
+
+    -fx-border-color: #DCE6EB;
+    -fx-border-width: 0 0 0 1px;
+}
+
+.login-heading {
+    -fx-text-fill: #123F5D;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.login-form .label {
+    -fx-text-fill: #355564;
+}
+
+/* =========================
+   CAMPOS
+   ========================= */
+
+.login-email,
+.login-password,
+.login-role {
+    -fx-background-color: #F9FBFC;
+
+    -fx-border-color: #D5E1E7;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+
+    -fx-padding: 10px 12px;
+
+    -fx-font-size: 13px;
+    -fx-text-fill: #20313D;
+
+    -fx-min-height: 42px;
+}
+
+.login-email:focused,
+.login-password:focused,
+.login-role:focused {
+    -fx-border-color: #2F8FBE;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+}
+
+.login-role {
+    -fx-min-width: 260px;
+}
+
+/* =========================
+   BOTÓN LOGIN
+   ========================= */
+
+.login-button {
+    -fx-background-color: #F28C28;
+    -fx-text-fill: white;
+
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8px;
+
+    -fx-padding: 12px 25px;
+
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #D97516;
+}
+
+.login-button:pressed {
+    -fx-background-color: #C46612;
+}
+
+/* =========================
+   TEXTOS
+   ========================= */
+
+.login-subtitle {
+    -fx-text-fill: #71828D;
+    -fx-font-size: 12px;
+}

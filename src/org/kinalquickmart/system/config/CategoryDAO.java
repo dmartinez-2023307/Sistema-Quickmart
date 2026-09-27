@@ -28,7 +28,7 @@ public class CategoryDAO {
             stmt.close();
             
         } catch (SQLException e) {
-            System.err.println("Error de base de datos al obtener categorías: " + e.getMessage());
+            System.err.println("Error al obtener categorías: " + e.getMessage());
         }
         return categoryList;
     }
