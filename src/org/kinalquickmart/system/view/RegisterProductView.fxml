@@ -11,10 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="346.0" 
-   xmlns="http://javafx.com/javafx/21.0.1" 
-   xmlns:fx="http://javafx.com/fxml/1" 
-   fx:controller="org.kinalquickmart.system.controller.RegisterProductController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="346.0" stylesheets="@../resources/style/RegisterProductStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.RegisterProductController">
    
    <top>
       <Pane prefHeight="55.0" prefWidth="346.0" BorderPane.alignment="CENTER">

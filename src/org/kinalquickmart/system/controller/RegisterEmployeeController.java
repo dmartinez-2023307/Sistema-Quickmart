@@ -74,7 +74,7 @@ public class RegisterEmployeeController implements Initializable {
         if (!email.contains("@") || !email.contains(".")) {
             alertInfo.viewAlert("WARNING", "Correo inválido", "El correo electrónico no tiene un formato válido.", "Validación");
             return;
-        }
+        }  
 
         // Verificar si el correo ya existe ANTES de intentar guardar
         boolean correoCambio = employeeToEdit == null

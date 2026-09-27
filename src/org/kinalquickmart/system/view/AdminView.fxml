@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="567.0" prefWidth="746.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="746.0" styleClass="admin-view" stylesheets="@../resources/style/AdminStyle.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.kinalquickmart.system.controller.AdminViewController">
             
    <left>
       <VBox alignment="CENTER" prefHeight="521.0" prefWidth="247.0" styleClass="admin-sidebar" BorderPane.alignment="CENTER">

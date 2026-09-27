@@ -19,7 +19,7 @@
          <children>
             <Pane prefHeight="108.0" prefWidth="237.0" />
             
-            <Label prefHeight="30.0" prefWidth="62.0" text="Correo">
+            <Label prefHeight="32.0" prefWidth="74.0" text="Correo">
                <font>
                   <Font size="22.0" />
                </font>
