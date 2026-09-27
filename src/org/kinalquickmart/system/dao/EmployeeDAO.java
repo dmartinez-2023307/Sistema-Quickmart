@@ -1,4 +1,4 @@
-package org.kinalquickmart.system.config;
+package org.kinalquickmart.system.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.kinalquickmart.system.config.ConexionDB;
 import org.kinalquickmart.system.model.Employee;
 
 public class EmployeeDAO {

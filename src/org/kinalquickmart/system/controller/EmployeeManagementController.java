@@ -17,7 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
-import org.kinalquickmart.system.config.EmployeeDAO;
+import org.kinalquickmart.system.dao.EmployeeDAO;
 import org.kinalquickmart.system.model.Employee;
 import org.kinalquickmart.system.utils.AlertInformation;
 
